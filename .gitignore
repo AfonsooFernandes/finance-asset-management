@@ -1,0 +1,23 @@
+# Arquivos de build e de saída
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.nupkg
+*.dll
+*.exe
+*.pdb
+*.cache
+*.vsp
+*.vspx
+*.userprefs
+
+# Pastas e arquivos de pacotes
+packages/
+*.nuget
+
+# Pasta de configuração do Rider
+.idea/
+
+appsettings.json
+appsettings.*.json
