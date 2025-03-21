@@ -1,21 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
 
-namespace FinanceTracker.Data;
-
-[Table("pagamentoimpostos")]
-public class PagamentoImpostos
+namespace FinanceTracker.Data
 {
-    [Key]
-    [Column("id")]
-    public int Id { get; set; }
+    public class PagamentoImpostos
+    {
+        public int Id { get; set; }
+        public int AtivoId { get; set; }
+        public DateTime DataPagamento { get; set; }
+        public float Valor { get; set; }
 
-    [Column("ativo_id")]
-    public int ativo_id { get; set; }
-
-    [Column("data_pagamento")]
-    public DateTime data_pagamento { get; set; }
-
-    [Column("valor")]
-    public double valor { get; set; }
+        public AtivoFinanceiro AtivoFinanceiro { get; set; }
+    }
 }

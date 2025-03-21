@@ -1,33 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace FinanceTracker.Data;
-
-[Table("imovelarrendado")]
-public class ImovelArrendado
+﻿namespace FinanceTracker.Data
 {
-    [Key]
-    [Column("id")]
-    public int Id { get; set; }
+    public class ImovelArrendado
+    {
+        public int Id { get; set; }
+        public int AtivoId { get; set; }
+        public string Designacao { get; set; }
+        public string Localizacao { get; set; }
+        public float ValorImovel { get; set; }
+        public float ValorRenda { get; set; }
+        public float ValorCondominio { get; set; }
+        public float OutrasDespesas { get; set; }
 
-    [Column("ativo_id")]
-    public int ativo_id { get; set; }
-
-    [Column("designacao")]
-    public string designacao { get; set; }
-
-    [Column("localizacao")]
-    public string localizacao { get; set; }
-
-    [Column("valor_imovel")]
-    public double valor_imovel { get; set; }
-
-    [Column("valor_renda")]
-    public double valor_renda { get; set; }
-
-    [Column("valor_condominio")]
-    public double valor_condominio { get; set; }
-
-    [Column("outras_despesas")]
-    public double outras_despesas { get; set; }
+        public AtivoFinanceiro AtivoFinanceiro { get; set; }
+    }
 }

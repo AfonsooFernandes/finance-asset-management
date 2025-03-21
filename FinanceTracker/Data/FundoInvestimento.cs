@@ -1,24 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 
-namespace FinanceTracker.Data;
-
-[Table("fundoinvestimento")]
-public class FundoInvestimento
+namespace FinanceTracker.Data
 {
-    [Key]
-    [Column("id")]
-    public int Id { get; set; }
+    public class FundoInvestimento
+    {
+        public int Id { get; set; }
+        public int AtivoId { get; set; }
+        public string Nome { get; set; }
+        public float Montante { get; set; }
+        public float TaxaJuro { get; set; }
 
-    [Column("ativo_id")]
-    public int ativo_id { get; set; }
+        public AtivoFinanceiro AtivoFinanceiro { get; set; }
 
-    [Column("nome")]
-    public string nome { get; set; }
-
-    [Column("montante")]
-    public double montante { get; set; }
-
-    [Column("taxa_juro")]
-    public double taxa_juro { get; set; }
+        public ICollection<JurosMensaisFundo> JurosMensais { get; set; }
+    }
 }

@@ -1,27 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
+using FinanceTracker.Models;
 
-namespace FinanceTracker.Data;
-
-[Table("ativofinanceiro")]
-public class AtivoFinanceiro
+namespace FinanceTracker.Data
 {
-    [Key]
-    [Column("id")]
-    public int Id { get; set; }
+    public class AtivoFinanceiro
+    {
+        public int Id { get; set; }
+        public int UtilizadorId { get; set; }
+        public string Tipo { get; set; }
+        public DateTime DataInicio { get; set; }
+        public int Duracao { get; set; }
+        public float Imposto { get; set; }
 
-    [Column("utilizador_id")]
-    public int utilizador_id { get; set; }
+        public Utilizador Utilizador { get; set; }
 
-    [Column("tipo")]
-    public string tipo { get; set; }
-
-    [Column("data_inicio")]
-    public DateTime data_inicio { get; set; }
-
-    [Column("duracao")]
-    public int duracao { get; set; }
-
-    [Column("imposto")]
-    public double imposto { get; set; }
+        public DepositoPrazo DepositoPrazo { get; set; }
+        public FundoInvestimento FundoInvestimento { get; set; }
+        public ImovelArrendado ImovelArrendado { get; set; }
+    }
 }

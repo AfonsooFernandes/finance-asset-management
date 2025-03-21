@@ -1,30 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace FinanceTracker.Data;
-
-[Table("depositoprazo")]
-public class DepositoPrazo
+﻿namespace FinanceTracker.Data
 {
-    [Key]
-    [Column("id")]
-    public int Id { get; set; }
-
-    [Column("ativo_id")]
-    public int ativo_id { get; set; }
-
-    [Column("valor")]
-    public double valor { get; set; }
-
-    [Column("banco")]
-    public string banco { get; set; }
-
-    [Column("numero_conta")]
-    public string numero_conta { get; set; }
-
-    [Column("titulares")]
-    public string titulares { get; set; }
-
-    [Column("taxa_juro_anual")]
-    public double taxa_juro_anual { get; set; }
+    public class DepositoPrazo
+    {
+        public int Id { get; set; }
+        public int AtivoId { get; set; }
+        public float Valor { get; set; }
+        public string Banco { get; set; }
+        public string NumeroConta { get; set; }
+        public string Titulares { get; set; }
+        public float TaxaJuroAnual { get; set; }
+        
+        public AtivoFinanceiro AtivoFinanceiro { get; set; }
+    }
 }
