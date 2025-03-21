@@ -50,7 +50,7 @@ Este projeto é um sistema de gestão de ativos financeiros pessoais. Ele permit
 2. Restaure as dependências do .NET:
    ```bash
    dotnet restore
-3. Configure o banco de dados no PostgreSQL e adicione a connection string em appsettings.json.
+3. Configure a base de dados no PostgreSQL e adicione a connection string em appsettings.json.
 4. Aplique as migrações para criar a base de dados:
   dotnet ef database update
 5. Execute o projeto: 
