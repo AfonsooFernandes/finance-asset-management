@@ -7,7 +7,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Adicionando serviços necessários
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
 builder.Services.AddControllers();
@@ -18,7 +17,6 @@ builder.Services.AddDbContext<FinanceTrackerContext>(options =>
 
 var app = builder.Build();
 
-// Configurações para diferentes ambientes
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -36,7 +34,6 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
 
-// Redirecionar a rota raiz para a página de login
 app.MapGet("/", async context => {
     context.Response.Redirect("/login");
     await Task.CompletedTask;
@@ -45,7 +42,6 @@ app.MapGet("/", async context => {
 app.MapRazorPages();
 app.MapControllers();
 
-// Verifica e cria, se necessário, um usuário admin padrão
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<FinanceTrackerContext>();
@@ -68,7 +64,6 @@ using (var scope = app.Services.CreateScope())
 
 app.Run();
 
-// Função para criar hash da senha
 string HashPassword(string password)
 {
     using (var sha256 = SHA256.Create())
