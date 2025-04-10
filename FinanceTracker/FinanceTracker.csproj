@@ -39,4 +39,8 @@
       <Folder Include="Migrations\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Controllers\FinanceTrackerContextController.cs" />
+    </ItemGroup>
+
 </Project>

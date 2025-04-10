@@ -16,7 +16,8 @@ namespace FinanceTracker.Data
         public DbSet<FundoInvestimento> FundosInvestimento { get; set; }
         public DbSet<JurosMensaisFundo> JurosMensaisFundos { get; set; }
         public DbSet<ImovelArrendado> ImoveisArrendados { get; set; }
-        public DbSet<PagamentoImpostos> PagamentosImpostos { get; set; }
+        public DbSet<PagamentoImpostos> PagamentoImpostos { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
