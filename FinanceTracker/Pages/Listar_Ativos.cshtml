@@ -1,0 +1,46 @@
+﻿@page
+@model FinanceTracker.Pages.ListarAtivosModel
+@{
+    ViewData["Title"] = "Listar Ativos Financeiros";
+}
+
+<link rel="stylesheet" href="/styles/style.css"/>
+<h2>Listar Ativos Financeiros</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Tipo</th>
+            <th>Data de Início</th>
+            <th>Duração (meses)</th>
+            <th>Imposto (%)</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var ativo in Model.Ativos)
+        {
+            <tr>
+                <td>@ativo.Tipo</td>
+                <td>@ativo.DataInicio</td>
+                <td>@ativo.Duracao</td>
+                <td>@ativo.Imposto</td>
+                <td>
+                    <a href="@Url.Page("/DetalhesAtivo", new { id = ativo.Id })" class="btn-secondary">Detalhes</a>
+                    <a href="@Url.Page("/EditarAtivo", new { id = ativo.Id })" class="btn-secondary">Editar</a>
+                    <form method="post" action="@Url.Page("/DeletarAtivo", new { id = ativo.Id })" style="display:inline;">
+                        <button type="submit" class="btn-secondary">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="/Menu" class="btn-secondary">Voltar</a>
+        <br><br>
+    </div>
+    
+</div>

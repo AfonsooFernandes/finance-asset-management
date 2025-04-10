@@ -1,0 +1,28 @@
+﻿@model FinanceTracker.Data.DepositoPrazo
+<link rel="stylesheet" href="/styles/style.css"/>
+<h4>Depósito a Prazo</h4>
+
+<div class="mb-3">
+    <label>Valor</label>
+    <input asp-for="Valor" class="form-control" type="number" step="0.01" />
+</div>
+
+<div class="mb-3">
+    <label>Banco</label>
+    <input asp-for="Banco" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label>Número de Conta</label>
+    <input asp-for="NumeroConta" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label>Titulares</label>
+    <input asp-for="Titulares" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label>Taxa de Juro Anual (%)</label>
+    <input asp-for="TaxaJuroAnual" class="form-control" type="number" step="0.01" />
+</div>

@@ -53,7 +53,7 @@ namespace FinanceTracker.Pages
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return RedirectToPage("Success");
+                    return RedirectToPage("Register");
                 }
                 else
                 {

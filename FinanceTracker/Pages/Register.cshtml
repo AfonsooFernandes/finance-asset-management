@@ -5,6 +5,7 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles/style.css"/>
     <title>Registo de Utilizador</title>
     <script>
         async function registerUser(event) {
@@ -27,7 +28,7 @@
             });
 
             if (response.ok) {
-                window.location.href = "/Success"; 
+                window.location.href = "/login"; 
             } else {
                 const errorText = await response.text();
                 document.getElementById("errorMessage").innerText = "Erro: " + errorText;
@@ -53,8 +54,15 @@
     <input type="password" id="senha" required />
     <br />
 
-    <button type="submit">Registar</button>
+    <div style="text-align: center; margin-top: 2rem;">
+        <button type="submit" class="btn-primary">Registar</button>
+    </div>
 </form>
+
+<div style="text-align: center; margin-top: 2rem;">
+    <a href="/Login" class="btn-secondary">Voltar</a>
+    <br><br>
+</div>
 
 <p id="errorMessage" style="color: red;"></p>
 </body>

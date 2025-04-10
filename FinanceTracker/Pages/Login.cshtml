@@ -1,10 +1,12 @@
 ﻿@page
 @model FinanceTracker.Pages.LoginModel
 
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/styles/style.css"/>
     <title>Login</title>
     <script>
         async function loginUser(event) {
@@ -25,7 +27,7 @@
             });
 
             if (response.ok) {
-                window.location.href = "/SuccessLogin";
+                window.location.href = "/Menu";
             } else {
                 const errorText = await response.text();
                 document.getElementById("errorMessage").innerText = "Erro: " + errorText;
@@ -49,8 +51,15 @@
     <span asp-validation-for="Senha" style="color: red;"></span>
     <br />
 
-    <button type="submit">Login</button>
+    <div style="text-align: center; margin-top: 2rem;">
+        <button type="submit" class="btn-primary">Login</button>
+    </div>
+    
 </form>
+
+<button type="button" onclick="window.location.href='@Url.Page("/register")'" class="btn-primary">
+  Registar
+</button>
 
 <p id="errorMessage" style="color: red;"></p>
 </body>

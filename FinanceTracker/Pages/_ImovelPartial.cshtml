@@ -1,0 +1,33 @@
+﻿@model FinanceTracker.Data.ImovelArrendado
+<link rel="stylesheet" href="/styles/style.css"/>
+<h4>Imóvel Arrendado</h4>
+
+<div class="mb-3">
+    <label>Designação</label>
+    <input asp-for="Designacao" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label>Localização (Morada)</label>
+    <input asp-for="Localizacao" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label>Valor do Imóvel</label>
+    <input asp-for="ValorImovel" class="form-control" type="number" step="0.01" />
+</div>
+
+<div class="mb-3">
+    <label>Valor da Renda</label>
+    <input asp-for="ValorRenda" class="form-control" type="number" step="0.01" />
+</div>
+
+<div class="mb-3">
+    <label>Valor do Condomínio (mensal)</label>
+    <input asp-for="ValorCondominio" class="form-control" type="number" step="0.01" />
+</div>
+
+<div class="mb-3">
+    <label>Despesas Anuais Estimadas</label>
+    <input asp-for="OutrasDespesas" class="form-control" type="number" step="0.01" />
+</div>

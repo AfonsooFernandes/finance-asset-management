@@ -1,0 +1,18 @@
+﻿@model FinanceTracker.Data.FundoInvestimento
+<link rel="stylesheet" href="/styles/style.css"/>
+<h4>Fundo de Investimento</h4>
+
+<div class="mb-3">
+    <label>Nome</label>
+    <input asp-for="Nome" class="form-control" />
+</div>
+
+<div class="mb-3">
+    <label>Montante Investido</label>
+    <input asp-for="Montante" class="form-control" type="number" step="0.01" />
+</div>
+
+<div class="mb-3">
+    <label>Taxa de Juro Padrão (%)</label>
+    <input asp-for="TaxaJuro" class="form-control" type="number" step="0.01" />
+</div>
