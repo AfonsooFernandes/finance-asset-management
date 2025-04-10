@@ -1,0 +1,145 @@
+/* Reset base */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #f4f7fa;
+    color: #1c1c1e;
+    height: 100%; /* A altura completa da página */
+    display: flex;
+    flex-direction: column; /* Alinhamento de cima para baixo */
+    justify-content: center; /* Centralização vertical */
+    align-items: center; /* Centralização horizontal */
+}
+
+/* Links */
+a, .btn-link {
+    color: #0066cc;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover, .btn-link:hover {
+    color: #004c99;
+}
+
+/* Botões */
+.btn-primary {
+    color: #fff;
+    background-color: #0056b3;
+    border: none;
+    padding: 10px 20px;
+    font-weight: 500;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 86, 179, 0.15);
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #004a99;
+}
+
+/* Botão de link visual (sem submit) */
+.btn-secondary {
+    background-color: #e0e0e0;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #d5d5d5;
+}
+
+/* Formulários */
+input, select, textarea {
+    font-size: 1rem;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+input:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 0 2px rgba(0, 86, 179, 0.2);
+}
+
+/* Validação */
+.valid.modified:not([type=checkbox]) {
+    border-color: #28a745;
+    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+}
+
+.invalid {
+    border-color: #dc3545;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+}
+
+.validation-message {
+    color: #dc3545;
+    font-size: 0.9rem;
+    margin-top: 4px;
+}
+
+/* Conteúdo */
+.content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Centralizando botões no formulário */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os elementos dentro do form-group */
+    margin-bottom: 1rem;
+}
+
+/* Centralizando os botões dentro do form-group */
+button, .btn {
+    width: auto;
+    max-width: 200px; /* Tamanho máximo para o botão */
+    margin: 10px 0;
+    align-self: center; /* Garante que o botão vai estar centralizado */
+}
+
+/* Títulos */
+h1, h2, h3 {
+    color: #003366;
+}
+
+/* Checkbox refinado */
+.form-check-input {
+    border: 1px solid #666;
+}
+
+/* Foco geral */
+.btn:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.3);
+}
+
+/* Blazor error */
+.blazor-error-boundary {
+    background-color: #b32121;
+    padding: 1rem;
+    color: white;
+    border-radius: 8px;
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.blazor-error-boundary::after {
+    content: "Ocorreu um erro inesperado.";
+}
