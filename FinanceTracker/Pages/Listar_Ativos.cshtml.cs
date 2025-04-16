@@ -6,12 +6,10 @@ namespace FinanceTracker.Pages
 {
     public class ListarAtivosModel : PageModel
     {
-        // Lista fictícia de ativos para simulação
         public List<AtivoFin> Ativos { get; set; }
 
         public ListarAtivosModel()
         {
-            // Dados de exemplo - em um caso real, esses dados seriam recuperados do banco de dados
             Ativos = new List<AtivoFin>
             {
                 new AtivoFin { Id = 1, Tipo = "DepositoPrazo", DataInicio = "2022-06-15", Duracao = 12, Imposto = 5.0f },
@@ -25,8 +23,7 @@ namespace FinanceTracker.Pages
             return Page();
         }
     }
-
-    // Classe fictícia para representar um ativo financeiro
+    
     public class AtivoFin
     {
         public int Id { get; set; }

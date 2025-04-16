@@ -1,7 +1,7 @@
 using FinanceTracker.Data;
-using Microsoft.EntityFrameworkCore;
 using FinanceTracker.Models;
-using System.Linq;
+using FinanceTracker.Services;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -14,6 +14,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<FinanceTrackerContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<AuthenticationService>();
 
 var app = builder.Build();
 
@@ -45,6 +46,8 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<FinanceTrackerContext>();
+    var authService = scope.ServiceProvider.GetRequiredService<AuthenticationService>();
+
     context.Database.EnsureCreated();
 
     var adminExists = context.Utilizadores.Any(u => u.Email == "admin@ipvc.pt" && u.TipoUtilizador == "ADMIN");
@@ -54,7 +57,7 @@ using (var scope = app.Services.CreateScope())
         {
             Nome = "Admin",
             Email = "admin@ipvc.pt",
-            SenhaHash = HashPassword("Password123"),
+            SenhaHash = authService.HashPassword("Password123"),
             TipoUtilizador = "ADMIN"
         };
         context.Utilizadores.Add(adminUser);
@@ -63,12 +66,3 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.Run();
-
-string HashPassword(string password)
-{
-    using (var sha256 = SHA256.Create())
-    {
-        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-        return BitConverter.ToString(hashedBytes).Replace("-", "").ToLowerInvariant();
-    }
-}

@@ -22,24 +22,19 @@ namespace FinanceTracker.Pages
 
         [BindProperty]
         public ImovelArrendado Imovel { get; set; } = new();
-
-        // List of asset types (options)
+        
         public SelectList Tipos { get; set; }
-
-        // This method runs when the page loads
+        
         public IActionResult OnGet()
         {
-            // Populate the SelectList with the types of assets
             Tipos = new SelectList(new List<string> { "DepositoPrazo", "FundoInvestimento", "ImovelArrendado" });
             return Page();
         }
-
-        // OnPost logic here as you have it
+        
         public IActionResult OnPost()
         {
             if (string.IsNullOrEmpty(Ativo.Tipo))
             {
-                // Reexibe a página se nenhum tipo for selecionado
                 return Page();
             }
 
@@ -48,7 +43,6 @@ namespace FinanceTracker.Pages
                 return Page();
             }
 
-            // Atribuir dados específicos conforme o tipo do ativo
             switch (Ativo.Tipo)
             {
                 case "DepositoPrazo":
