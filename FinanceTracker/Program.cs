@@ -27,6 +27,16 @@ builder.Services.AddHttpClient<DepositoPrazoService>(client =>
     client.BaseAddress = new Uri("http://localhost:5232/");
 });
 
+builder.Services.AddHttpClient<FundoInvestimentoService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5232/");
+});
+
+builder.Services.AddHttpClient<ImovelArrendadoService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5232/");
+});
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -40,7 +50,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-// xcvbnm
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();

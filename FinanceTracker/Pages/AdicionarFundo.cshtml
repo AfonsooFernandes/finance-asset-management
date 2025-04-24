@@ -1,19 +1,61 @@
 ﻿@page
-@model FinanceTracker.Pages.AdicionarFundo
-
+@model FinanceTracker.Pages.AdicionarFundoModel
 @{
-    Layout = null;
+    ViewData["Title"] = "Adicionar Fundo de Investimento";
 }
+<link rel="stylesheet" href="/styles/style.css"/>
 
-<!DOCTYPE html>
+<h2>Adicionar Fundo de Investimento</h2>
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
-</div>
-</body>
-</html>
+<form method="post">
+    @Html.AntiForgeryToken()
+
+    <fieldset>
+        
+        <input type="hidden" name="Ativo.UtilizadorId" id="Ativo_UtilizadorId" />
+        <input type="hidden" name="Ativo.Tipo" value="Fundo de Investimento"/>
+
+        <legend>Dados Gerais</legend>
+        <div>
+            <label for="Ativo_DataInicio">Data de Início</label>
+            <input name="Ativo.DataInicio" id="Ativo_DataInicio" type="date" class="form-control"/>
+        </div>
+        <div>
+            <label for="Ativo_Duracao">Duração (em meses)</label>
+            <input name="Ativo.Duracao" id="Ativo_Duracao" class="form-control"/>
+        </div>
+        <div>
+            <label for="Ativo_Imposto">Taxa de Imposto (%)</label>
+            <input name="Ativo.Imposto" id="Ativo_Imposto" class="form-control"/>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Informações do Fundo de Investimento</legend>
+        <div>
+            <label for="Fundo_Nome">Nome</label>
+            <input name="Fundo.Nome" id="Fundo_Nome" class="form-control" />
+        </div>
+        <div>
+            <label for="Fundo_Montante">Montante (€)</label>
+            <input name="Fundo.Montante" id="Fundo_Montante" class="form-control" />
+        </div>
+        <div>
+            <label for="Fundo_TaxaJuro">Taxa de Juro (%)</label>
+            <input name="Fundo.TaxaJuro" id="Fundo_TaxaJuro" class="form-control" />
+        </div>
+    </fieldset>
+
+    <button type="submit" class="btn-primary">Adicionar</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+            document.getElementById("Ativo_UtilizadorId").value = userId;
+        } else {
+            alert("Erro: Utilizador não autenticado. Por favor, volte a fazer login.");
+        }
+    });
+</script>

@@ -1,19 +1,73 @@
 ﻿@page
-@model FinanceTracker.Pages.AdicionarImovel
-
+@model FinanceTracker.Pages.AdicionarImovelModel
 @{
-    Layout = null;
+    ViewData["Title"] = "Adicionar Imóvel Arrendado";
 }
+<link rel="stylesheet" href="/styles/style.css"/>
 
-<!DOCTYPE html>
+<h2>Adicionar Imóvel Arrendado</h2>
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
-</div>
-</body>
-</html>
+<form method="post">
+    @Html.AntiForgeryToken()
+
+    <fieldset>
+        
+        <input type="hidden" name="Ativo.UtilizadorId" id="Ativo_UtilizadorId" />
+        <input type="hidden" name="Ativo.Tipo" value="Imóvel Arrendado"/>
+
+        <legend>Dados Gerais</legend>
+        <div>
+            <label for="Ativo_DataInicio">Data de Início</label>
+            <input name="Ativo.DataInicio" id="Ativo_DataInicio" type="date" class="form-control"/>
+        </div>
+        <div>
+            <label for="Ativo_Duracao">Duração (em meses)</label>
+            <input name="Ativo.Duracao" id="Ativo_Duracao" class="form-control"/>
+        </div>
+        <div>
+            <label for="Ativo_Imposto">Taxa de Imposto (%)</label>
+            <input name="Ativo.Imposto" id="Ativo_Imposto" class="form-control"/>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Informações do Imóvel</legend>
+        <div>
+            <label for="Imovel_Designacao">Designação</label>
+            <input name="Imovel.Designacao" id="Imovel_Designacao" class="form-control" />
+        </div>
+        <div>
+            <label for="Imovel_Localizacao">Localização</label>
+            <input name="Imovel.Localizacao" id="Imovel_Localizacao" class="form-control" />
+        </div>
+        <div>
+            <label for="Imovel_ValorImovel">Valor do Imóvel</label>
+            <input name="Imovel.ValorImovel" id="Imovel_ValorImovel" class="form-control" />
+        </div>
+        <div>
+            <label for="Imovel_ValorRenda">Valor da Renda</label>
+            <input name="Imovel.ValorRenda" id="Imovel_ValorRenda" class="form-control" />
+        </div>
+        <div>
+            <label for="Imovel_ValorCondominio">Valor do Condomínio</label>
+            <input name="Imovel.ValorCondominio" id="Imovel_ValorCondominio" class="form-control" />
+        </div>
+        <div>
+            <label for="Imovel_OutrasDespesas">Outras Despesas</label>
+            <input name="Imovel.OutrasDespesas" id="Imovel_OutrasDespesas" class="form-control" />
+        </div>
+    </fieldset>
+
+    <button type="submit" class="btn-primary">Adicionar</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+            document.getElementById("Ativo_UtilizadorId").value = userId;
+        } else {
+            alert("Erro: Utilizador não autenticado. Por favor, volte a fazer login.");
+        }
+    });
+</script>
