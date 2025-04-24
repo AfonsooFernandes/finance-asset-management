@@ -12,9 +12,20 @@ builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<FinanceTrackerContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<FinanceTrackerContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<AuthenticationService>();
+builder.Services.AddScoped<AtivoFinanceiroService>();
+builder.Services.AddScoped<DepositoPrazoService>();
+
+builder.Services.AddHttpClient<AtivoFinanceiroService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5232/");
+});
+
+builder.Services.AddHttpClient<DepositoPrazoService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5232/");
+});
 
 var app = builder.Build();
 

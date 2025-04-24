@@ -27,13 +27,13 @@ namespace FinanceTracker.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<bool> ValidarCredenciais(string email, string senha)
+        public async Task<Utilizador> ValidarCredenciais(string email, string senha)
         {
             var user = await _context.Utilizadores.FirstOrDefaultAsync(u => u.Email == email);
-            if (user == null) return false;
+            if (user == null) return null;
 
             var senhaHash = HashPassword(senha);
-            return user.SenhaHash == senhaHash;
+            return user.SenhaHash == senhaHash ? user : null;
         }
 
         public string HashPassword(string password)

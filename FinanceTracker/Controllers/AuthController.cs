@@ -40,11 +40,11 @@ namespace FinanceTracker.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginUserDto loginDto)
         {
-            var valido = await _authService.ValidarCredenciais(loginDto.Email, loginDto.Senha);
-            if (!valido)
+            var user = await _authService.ValidarCredenciais(loginDto.Email, loginDto.Senha);
+            if (user == null)
                 return BadRequest("Email ou palavra-passe incorretos.");
 
-            return Ok(new { message = "Login efetuado com sucesso." });
+            return Ok(new { message = "Login efetuado com sucesso.", userId = user.Id });
         }
     }
 }

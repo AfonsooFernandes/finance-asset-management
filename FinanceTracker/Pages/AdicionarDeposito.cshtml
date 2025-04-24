@@ -1,0 +1,69 @@
+﻿@page
+@model FinanceTracker.Pages.AdicionarDepositoModel
+@{
+    ViewData["Title"] = "Adicionar Depósito a Prazo";
+}
+<link rel="stylesheet" href="/styles/style.css"/>
+
+<h2>Adicionar Depósito a Prazo</h2>
+
+<form method="post">
+    @Html.AntiForgeryToken()
+
+    <fieldset>
+        
+        <input type="hidden" name="Ativo.UtilizadorId" id="Ativo_UtilizadorId" />
+        <input type="hidden" name="Ativo.Tipo" value="Depósito a Prazo"/>
+
+        <legend>Dados Gerais</legend>
+        <div>
+            <label for="Ativo_DataInicio">Data de Início</label>
+            <input name="Ativo.DataInicio" id="Ativo_DataInicio" type="date" class="form-control"/>
+        </div>
+        <div>
+            <label for="Ativo_Duracao">Duração (em meses)</label>
+            <input name="Ativo.Duracao" id="Ativo_Duracao" class="form-control"/>
+        </div>
+        <div>
+            <label for="Ativo_Imposto">Taxa de Imposto (%)</label>
+            <input name="Ativo.Imposto" id="Ativo_Imposto" class="form-control"/>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Informações do Depósito</legend>
+        <div>
+            <label for="Deposito_Valor">Valor Investido (€)</label>
+            <input name="Deposito.Valor" id="Deposito_Valor" class="form-control" />
+        </div>
+        <div>
+            <label for="Deposito_Banco">Banco</label>
+            <input name="Deposito.Banco" id="Deposito_Banco" class="form-control" />
+        </div>
+        <div>
+            <label for="Deposito_NumeroConta">Número da Conta</label>
+            <input name="Deposito.NumeroConta" id="Deposito_NumeroConta" class="form-control" />
+        </div>
+        <div>
+            <label for="Deposito_Titulares">Titulares</label>
+            <input name="Deposito.Titulares" id="Deposito_Titulares" class="form-control" />
+        </div>
+        <div>
+            <label for="Deposito_TaxaJuroAnual">Taxa de Juro Anual (%)</label>
+            <input name="Deposito.TaxaJuroAnual" id="Deposito_TaxaJuroAnual" class="form-control" />
+        </div>
+    </fieldset>
+
+    <button type="submit" class="btn-primary">Adicionar</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userId = localStorage.getItem("userId");
+        if (userId) {
+            document.getElementById("Ativo_UtilizadorId").value = userId;
+        } else {
+            alert("Erro: Utilizador não autenticado. Por favor, volte a fazer login.");
+        }
+    });
+</script>

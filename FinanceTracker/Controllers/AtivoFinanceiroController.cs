@@ -58,7 +58,7 @@ namespace FinanceTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateAtivo([FromBody] AtivoFinanceiroDto dto)
+        public async Task<ActionResult<AtivoFinanceiroDto>> CreateAtivo([FromBody] AtivoFinanceiroDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -67,15 +67,18 @@ namespace FinanceTracker.Controllers
             {
                 UtilizadorId = dto.UtilizadorId,
                 Tipo = dto.Tipo,
-                DataInicio = dto.DataInicio,
+                DataInicio = DateTime.SpecifyKind(dto.DataInicio, DateTimeKind.Utc),
                 Duracao = dto.Duracao,
                 Imposto = dto.Imposto
             };
 
             _context.AtivosFinanceiros.Add(ativo);
+            Console.WriteLine($"- Id: {dto.UtilizadorId}");
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "Ativo financeiro criado com sucesso." });
+            dto.Id = ativo.Id; // Preenche o ID gerado
+
+            return Ok(dto); // Retorna o DTO com ID
         }
 
         [HttpPut("{id}")]

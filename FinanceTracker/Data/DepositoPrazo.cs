@@ -1,4 +1,6 @@
-﻿namespace FinanceTracker.Data
+﻿using FinanceTracker.Models;
+
+namespace FinanceTracker.Data
 {
     public class DepositoPrazo
     {
@@ -11,5 +13,6 @@
         public float TaxaJuroAnual { get; set; }
         
         public AtivoFinanceiro AtivoFinanceiro { get; set; }
+        
     }
 }

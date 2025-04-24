@@ -1,4 +1,6 @@
-﻿namespace FinanceTracker.Data
+﻿using FinanceTracker.Models;
+
+namespace FinanceTracker.Data
 {
     public class ImovelArrendado
     {
@@ -12,5 +14,6 @@
         public float OutrasDespesas { get; set; }
 
         public AtivoFinanceiro AtivoFinanceiro { get; set; }
+        
     }
 }

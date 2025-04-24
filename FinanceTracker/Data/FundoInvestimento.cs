@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FinanceTracker.Models;
+using System.Collections.Generic;
 
 namespace FinanceTracker.Data
 {
@@ -13,5 +14,6 @@ namespace FinanceTracker.Data
         public AtivoFinanceiro AtivoFinanceiro { get; set; }
 
         public ICollection<JurosMensaisFundo> JurosMensais { get; set; }
+        
     }
 }

@@ -35,14 +35,14 @@ namespace FinanceTracker.Services
             return null;
         }
 
-        public async Task<string> CreateAtivo(AtivoFinanceiroDto ativo)
+        public async Task<AtivoFinanceiroDto> CreateAtivo(AtivoFinanceiroDto ativo)
         {
             var response = await _httpClient.PostAsJsonAsync("api/ativos", ativo);
-            
+
             if (response.IsSuccessStatusCode)
-                return "Ativo financeiro criado com sucesso.";
-            
-            return await response.Content.ReadAsStringAsync();
+                return await response.Content.ReadFromJsonAsync<AtivoFinanceiroDto>();
+
+            return null;
         }
 
         public async Task<string> UpdateAtivo(int id, AtivoFinanceiroDto ativo)
