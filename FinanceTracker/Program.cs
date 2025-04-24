@@ -40,7 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+// xcvbnm
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
