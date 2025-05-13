@@ -3,23 +3,19 @@
 @{
     ViewData["Title"] = "Listar Ativos Financeiros";
 }
-
 <link rel="stylesheet" href="/styles/style.css"/>
-<h2>Listar Ativos Financeiros</h2>
 
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
+<h2 style="text-align: center;">@ViewData["Title"]</h2>
+
+<div class="container">
+    <table>
         <tr>
             <th>Tipo</th>
-            <th>Data de Início</th>
-            <th>Duração (meses)</th>
-            <th>Imposto (%)</th>
-            <th>Ações</th>
+            <th>Data Início</th>
+            <th>Duração</th>
+            <th>Imposto</th>
         </tr>
-        </thead>
-        <tbody>
-        @foreach (var ativo in Model.Ativos)
+        @foreach (var ativo in Model.AtivosFinanceiros)
         {
             <tr>
                 <td>@ativo.Tipo</td>
@@ -27,20 +23,54 @@
                 <td>@ativo.Duracao</td>
                 <td>@ativo.Imposto</td>
                 <td>
-                    <a href="@Url.Page("/DetalhesAtivo", new { id = ativo.Id })" class="btn-secondary">Detalhes</a>
-                    <a href="@Url.Page("/EditarAtivo", new { id = ativo.Id })" class="btn-secondary">Editar</a>
-                    <form method="post" action="@Url.Page("/DeletarAtivo", new { id = ativo.Id })" style="display:inline;">
-                        <button type="submit" class="btn-secondary">Excluir</button>
-                    </form>
+                    @if (!string.IsNullOrEmpty(ativo.Tipo) && ativo.Id > 0 && ativo.UtilizadorId > 0) 
+                    { 
+                        <form method="get" action="/DetalhesAtivo">
+                            <input type="hidden" name="tipo" value="@ativo.Tipo"/>
+                            <input type="hidden" name="id" value="@ativo.Id"/>
+                            <input type="hidden" name="userId" value="@ativo.UtilizadorId"/>
+                            <button type="submit" class="btn btn-primary">Detalhes</button>
+                        </form>
+                        <span class="debug-info" style="display:none;">
+                            Debug: Tipo=@ativo.Tipo, Id=@ativo.Id, UserId=@ativo.UtilizadorId
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="text-muted">
+                            Detalhes indisponíveis (Tipo: @(ativo.Tipo ?? "nulo"), Id: @ativo.Id, UserId: @ativo.UtilizadorId)
+                            </span>
+                    }
                 </td>
             </tr>
         }
-        </tbody>
     </table>
     
+        
     <div style="text-align: center; margin-top: 2rem;">
-        <a href="/Menu" class="btn-secondary">Voltar</a>
-        <br><br>
+        <a href="/Menu" class="btn btn-secondary">Voltar ao Menu</a>
     </div>
-    
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("Script de Listar_Ativos iniciado.");
+        const userId = localStorage.getItem("userId");
+        console.log("UserId do localStorage em Listar_Ativos:", userId);
+        console.log("Query string atual:", window.location.search);
+
+        if (!userId) {
+            console.log("Erro: userId não encontrado no localStorage.");
+            alert("Erro: Utilizador não autenticado. Por favor, volte a fazer login.");
+            window.location.href = "/Login";
+            return;
+        }
+
+        if (!window.location.search.includes("userId=")) {
+            console.log("Query string não contém userId. Redirecionando para:", "/Listar_Ativos?userId=" + userId);
+            window.location.href = "/Listar_Ativos?userId=" + encodeURIComponent(userId);
+        } else {
+            console.log("userId presente na query string:", window.location.search);
+        }
+    });
+</script>

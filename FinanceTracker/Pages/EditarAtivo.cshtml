@@ -1,0 +1,136 @@
+﻿@page
+@model FinanceTracker.Pages.EditarAtivoModel
+@{
+    ViewData["Title"] = "Editar Ativo";
+}
+
+<h1>Editar Ativo</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage) || Model.AtivoFinanceiro == null)
+{
+    <div class="alert alert-danger">
+        @(Model.ErrorMessage ?? "Ativo não carregado corretamente.")
+        <br />
+        Parâmetros recebidos: Tipo=@(Request.Query["tipo"]), Id=@(Request.Query["id"]), UserId=@(Request.Query["userId"])
+    </div>
+}
+else
+{
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="AtivoFinanceiro.Id" name="AtivoFinanceiro.Id" value="@Model.AtivoFinanceiro.Id" />
+        <input type="hidden" asp-for="AtivoFinanceiro.UtilizadorId" name="AtivoFinanceiro.UtilizadorId" value="@Model.AtivoFinanceiro.UtilizadorId" />
+        <input type="hidden" asp-for="AtivoFinanceiro.Tipo" name="AtivoFinanceiro.Tipo" value="@Model.AtivoFinanceiro.Tipo" />
+
+        <h3>Informações Gerais</h3>
+        <div class="form-group">
+            <label asp-for="AtivoFinanceiro.DataInicio"></label>
+            <input asp-for="AtivoFinanceiro.DataInicio" name="AtivoFinanceiro.DataInicio" class="form-control" type="date" value="@Model.AtivoFinanceiro.DataInicio.ToString("yyyy-MM-dd")" required />
+            <span asp-validation-for="AtivoFinanceiro.DataInicio" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AtivoFinanceiro.Duracao"></label>
+            <input asp-for="AtivoFinanceiro.Duracao" name="AtivoFinanceiro.Duracao" class="form-control" type="number" step="1" value="@Model.AtivoFinanceiro.Duracao" required />
+            <span asp-validation-for="AtivoFinanceiro.Duracao" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="AtivoFinanceiro.Imposto"></label>
+            <input asp-for="AtivoFinanceiro.Imposto" name="AtivoFinanceiro.Imposto" class="form-control" type="number" step="0.01" value="@Model.AtivoFinanceiro.Imposto" required />
+            <span asp-validation-for="AtivoFinanceiro.Imposto" class="text-danger"></span>
+        </div>
+
+        @if (Model.DepositoPrazo != null)
+        {
+            <h3>Depósito a Prazo</h3>
+            <input type="hidden" asp-for="DepositoPrazo.Id" name="DepositoPrazo.Id" value="@Model.DepositoPrazo.Id" />
+            <input type="hidden" asp-for="DepositoPrazo.AtivoId" name="DepositoPrazo.AtivoId" value="@Model.DepositoPrazo.AtivoId" />
+            <div class="form-group">
+                <label asp-for="DepositoPrazo.Valor"></label>
+                <input asp-for="DepositoPrazo.Valor" name="DepositoPrazo.Valor" class="form-control" type="number" step="0.01" value="@Model.DepositoPrazo.Valor" required />
+                <span asp-validation-for="DepositoPrazo.Valor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepositoPrazo.Banco"></label>
+                <input asp-for="DepositoPrazo.Banco" name="DepositoPrazo.Banco" class="form-control" value="@Model.DepositoPrazo.Banco" required />
+                <span asp-validation-for="DepositoPrazo.Banco" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepositoPrazo.NumeroConta"></label>
+                <input asp-for="DepositoPrazo.NumeroConta" name="DepositoPrazo.NumeroConta" class="form-control" value="@Model.DepositoPrazo.NumeroConta" required />
+                <span asp-validation-for="DepositoPrazo.NumeroConta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepositoPrazo.Titulares"></label>
+                <input asp-for="DepositoPrazo.Titulares" name="DepositoPrazo.Titulares" class="form-control" value="@Model.DepositoPrazo.Titulares" required />
+                <span asp-validation-for="DepositoPrazo.Titulares" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepositoPrazo.TaxaJuroAnual"></label>
+                <input asp-for="DepositoPrazo.TaxaJuroAnual" name="DepositoPrazo.TaxaJuroAnual" class="form-control" type="number" step="0.01" value="@Model.DepositoPrazo.TaxaJuroAnual" required />
+                <span asp-validation-for="DepositoPrazo.TaxaJuroAnual" class="text-danger"></span>
+            </div>
+        }
+        else if (Model.FundoInvestimento != null)
+        {
+            <h3>Fundo de Investimento</h3>
+            <input type="hidden" asp-for="FundoInvestimento.Id" name="FundoInvestimento.Id" value="@Model.FundoInvestimento.Id" />
+            <input type="hidden" asp-for="FundoInvestimento.AtivoId" name="FundoInvestimento.AtivoId" value="@Model.FundoInvestimento.AtivoId" />
+            <div class="form-group">
+                <label asp-for="FundoInvestimento.Nome"></label>
+                <input asp-for="FundoInvestimento.Nome" name="FundoInvestimento.Nome" class="form-control" value="@Model.FundoInvestimento.Nome" required />
+                <span asp-validation-for="FundoInvestimento.Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FundoInvestimento.Montante"></label>
+                <input asp-for="FundoInvestimento.Montante" name="FundoInvestimento.Montante" class="form-control" type="number" step="0.01" value="@Model.FundoInvestimento.Montante" required />
+                <span asp-validation-for="FundoInvestimento.Montante" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FundoInvestimento.TaxaJuro"></label>
+                <input asp-for="FundoInvestimento.TaxaJuro" name="FundoInvestimento.TaxaJuro" class="form-control" type="number" step="0.01" value="@Model.FundoInvestimento.TaxaJuro" required />
+                <span asp-validation-for="FundoInvestimento.TaxaJuro" class="text-danger"></span>
+            </div>
+        }
+        else if (Model.ImovelArrendado != null)
+        {
+            <h3>Imóvel Arrendado</h3>
+            <input type="hidden" asp-for="ImovelArrendado.Id" name="ImovelArrendado.Id" value="@Model.ImovelArrendado.Id" />
+            <input type="hidden" asp-for="ImovelArrendado.AtivoId" name="ImovelArrendado.AtivoId" value="@Model.ImovelArrendado.AtivoId" />
+            <div class="form-group">
+                <label asp-for="ImovelArrendado.Designacao"></label>
+                <input asp-for="ImovelArrendado.Designacao" name="ImovelArrendado.Designacao" class="form-control" value="@Model.ImovelArrendado.Designacao" required />
+                <span asp-validation-for="ImovelArrendado.Designacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImovelArrendado.Localizacao"></label>
+                <input asp-for="ImovelArrendado.Localizacao" name="ImovelArrendado.Localizacao" class="form-control" value="@Model.ImovelArrendado.Localizacao" required />
+                <span asp-validation-for="ImovelArrendado.Localizacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImovelArrendado.ValorImovel"></label>
+                <input asp-for="ImovelArrendado.ValorImovel" name="ImovelArrendado.ValorImovel" class="form-control" type="number" step="0.01" value="@Model.ImovelArrendado.ValorImovel" required />
+                <span asp-validation-for="ImovelArrendado.ValorImovel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImovelArrendado.ValorRenda"></label>
+                <input asp-for="ImovelArrendado.ValorRenda" name="ImovelArrendado.ValorRenda" class="form-control" type="number" step="0.01" value="@Model.ImovelArrendado.ValorRenda" required />
+                <span asp-validation-for="ImovelArrendado.ValorRenda" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImovelArrendado.ValorCondominio"></label>
+                <input asp-for="ImovelArrendado.ValorCondominio" name="ImovelArrendado.ValorCondominio" class="form-control" type="number" step="0.01" value="@Model.ImovelArrendado.ValorCondominio" required />
+                <span asp-validation-for="ImovelArrendado.ValorCondominio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImovelArrendado.OutrasDespesas"></label>
+                <input asp-for="ImovelArrendado.OutrasDespesas" name="ImovelArrendado.OutrasDespesas" class="form-control" type="number" step="0.01" value="@Model.ImovelArrendado.OutrasDespesas" required />
+                <span asp-validation-for="ImovelArrendado.OutrasDespesas" class="text-danger"></span>
+            </div>
+        }
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            <a class="btn btn-secondary" asp-page="/DetalhesAtivo" asp-route-tipo="@Model.AtivoFinanceiro.Tipo" asp-route-id="@Model.AtivoFinanceiro.Id" asp-route-userId="@Model.AtivoFinanceiro.UtilizadorId">Cancelar</a>
+        </div>
+    </form>
+}

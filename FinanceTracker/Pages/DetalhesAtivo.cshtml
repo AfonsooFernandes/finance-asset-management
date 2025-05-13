@@ -1,0 +1,109 @@
+﻿@page
+@model FinanceTracker.Pages.DetalhesAtivoModel
+@{
+    ViewData["Title"] = "Detalhes do Ativo";
+}
+
+<link rel="stylesheet" href="/styles/style.css"/>
+
+<h2 style="text-align: center;">@ViewData["Title"]</h2>
+
+<div class="container">
+    
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+            @Model.ErrorMessage
+            <br />
+            Parâmetros recebidos: Tipo=@(Request.Query["tipo"]), Id=@(Request.Query["id"]), UserId=@(Request.Query["userId"])
+        </div>
+    }
+    else
+    {
+        <h3>Informações Gerais</h3>
+        <dl class="row">
+            <dt class="col-sm-3">Tipo</dt>
+            <dd class="col-sm-9">@Model.AtivoFinanceiro.Tipo</dd>
+            <dt class="col-sm-3">Data Início</dt>
+            <dd class="col-sm-9">@Model.AtivoFinanceiro.DataInicio.ToString("dd/MM/yyyy")</dd>
+            <dt class="col-sm-3">Duração</dt>
+            <dd class="col-sm-9">@Model.AtivoFinanceiro.Duracao</dd>
+            <dt class="col-sm-3">Imposto</dt>
+            <dd class="col-sm-9">@Model.AtivoFinanceiro.Imposto</dd>
+        </dl>
+
+        @if (Model.DepositoPrazo != null)
+        {
+            <h3>Detalhes do Depósito a Prazo</h3>
+            <dl class="row">
+                <dt class="col-sm-3">Valor</dt>
+                <dd class="col-sm-9">@Model.DepositoPrazo.Valor.ToString("F2")</dd>
+                <dt class="col-sm-3">Banco</dt>
+                <dd class="col-sm-9">@Model.DepositoPrazo.Banco</dd>
+                <dt class="col-sm-3">Número da Conta</dt>
+                <dd class="col-sm-9">@Model.DepositoPrazo.NumeroConta</dd>
+                <dt class="col-sm-3">Titulares</dt>
+                <dd class="col-sm-9">@Model.DepositoPrazo.Titulares</dd>
+                <dt class="col-sm-3">Taxa de Juro Anual</dt>
+                <dd class="col-sm-9">@Model.DepositoPrazo.TaxaJuroAnual.ToString("F2")%</dd>
+            </dl>
+        }
+        else if (Model.FundoInvestimento != null)
+        {
+            <h3>Detalhes do Fundo de Investimento</h3>
+            <dl class="row">
+                <dt class="col-sm-3">Nome</dt>
+                <dd class="col-sm-9">@Model.FundoInvestimento.Nome</dd>
+                <dt class="col-sm-3">Montante</dt>
+                <dd class="col-sm-9">@Model.FundoInvestimento.Montante.ToString("F2")</dd>
+                <dt class="col-sm-3">Taxa de Juro</dt>
+                <dd class="col-sm-9">@Model.FundoInvestimento.TaxaJuro.ToString("F2")%</dd>
+            </dl>
+        }
+        else if (Model.ImovelArrendado != null)
+        {
+            <h3>Detalhes do Imóvel Arrendado</h3>
+            <dl class="row">
+                <dt class="col-sm-3">Designação</dt>
+                <dd class="col-sm-9">@Model.ImovelArrendado.Designacao</dd>
+                <dt class="col-sm-3">Localização</dt>
+                <dd class="col-sm-9">@Model.ImovelArrendado.Localizacao</dd>
+                <dt class="col-sm-3">Valor do Imóvel</dt>
+                <dd class="col-sm-9">@Model.ImovelArrendado.ValorImovel.ToString("F2")</dd>
+                <dt class="col-sm-3">Valor da Renda</dt>
+                <dd class="col-sm-9">@Model.ImovelArrendado.ValorRenda.ToString("F2")</dd>
+                <dt class="col-sm-3">Valor do Condomínio</dt>
+                <dd class="col-sm-9">@Model.ImovelArrendado.ValorCondominio.ToString("F2")</dd>
+                <dt class="col-sm-3">Outras Despesas</dt>
+                <dd class="col-sm-9">@Model.ImovelArrendado.OutrasDespesas.ToString("F2")</dd>
+            </dl>
+        }
+    }
+
+    <div style="text-align: center; margin-top: 2rem;">
+        <a href="/Menu" class="btn btn-secondary">Voltar</a>
+         @if (!string.IsNullOrEmpty(Model.AtivoFinanceiro.Tipo) && Model.AtivoFinanceiro.Id > 0 && Model.AtivoFinanceiro.UtilizadorId > 0) 
+        { 
+            <form method="get" action="/EditarAtivo">
+                <input type="hidden" name="tipo" value="@Model.AtivoFinanceiro.Tipo"/>
+                <input type="hidden" name="id" value="@Model.AtivoFinanceiro.Id"/>
+                <input type="hidden" name="userId" value="@Model.AtivoFinanceiro.UtilizadorId"/>
+                <button type="submit" class="btn btn-primary">Editar</button>
+            </form>
+            <span class="debug-info" style="display:none;">
+                Debug: Tipo=@Model.AtivoFinanceiro.Tipo, Id=@Model.AtivoFinanceiro.Id, UserId=@Model.AtivoFinanceiro.UtilizadorId
+            </span> 
+        }
+        <form asp-page="/DetalhesAtivo" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="tipo" value="@(Model.AtivoFinanceiro?.Tipo ?? Request.Query["tipo"])" />
+            <input type="hidden" name="id" value="@(Model.AtivoFinanceiro?.Id.ToString() ?? Request.Query["id"])" />
+            <input type="hidden" name="userId" value="@(Model.AtivoFinanceiro?.UtilizadorId.ToString() ?? Request.Query["userId"])" />
+            <button type="submit" asp-page-handler="Delete" class="btn btn-danger">Eliminar Ativo</button>
+        </form>
+    </div>
+</div>
+
+<span class="debug-info" style="display:none;">
+    Debug: Tipo=@(Request.Query["tipo"]), Id=@(Request.Query["id"]), UserId=@(Request.Query["userId"])
+</span>

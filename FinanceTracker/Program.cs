@@ -12,6 +12,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAntiforgery();
 builder.Services.AddDbContext<FinanceTrackerContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<AtivoFinanceiroService>();
@@ -54,6 +55,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAntiforgery();
 app.UseAuthorization();
 
 app.MapGet("/", async context => {
