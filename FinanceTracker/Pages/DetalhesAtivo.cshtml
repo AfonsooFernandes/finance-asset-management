@@ -99,7 +99,7 @@
             <input type="hidden" name="tipo" value="@(Model.AtivoFinanceiro?.Tipo ?? Request.Query["tipo"])" />
             <input type="hidden" name="id" value="@(Model.AtivoFinanceiro?.Id.ToString() ?? Request.Query["id"])" />
             <input type="hidden" name="userId" value="@(Model.AtivoFinanceiro?.UtilizadorId.ToString() ?? Request.Query["userId"])" />
-            <button type="submit" asp-page-handler="Delete" class="btn btn-danger">Eliminar Ativo</button>
+            <button type="submit" asp-page-handler="Delete" class="btn btn-secondary">Eliminar Ativo</button>
         </form>
     </div>
 </div>

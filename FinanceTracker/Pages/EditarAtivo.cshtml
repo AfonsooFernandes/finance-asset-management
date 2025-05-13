@@ -4,7 +4,11 @@
     ViewData["Title"] = "Editar Ativo";
 }
 
-<h1>Editar Ativo</h1>
+<link rel="stylesheet" href="/styles/style.css"/>
+
+<h2 style="text-align: center;">@ViewData["Title"]</h2>
+
+<div class="container">
 
 @if (!string.IsNullOrEmpty(Model.ErrorMessage) || Model.AtivoFinanceiro == null)
 {
@@ -130,7 +134,9 @@ else
 
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Salvar</button>
-            <a class="btn btn-secondary" asp-page="/DetalhesAtivo" asp-route-tipo="@Model.AtivoFinanceiro.Tipo" asp-route-id="@Model.AtivoFinanceiro.Id" asp-route-userId="@Model.AtivoFinanceiro.UtilizadorId">Cancelar</a>
+            <a class="btn btn-secondary" href="/Menu" asp-route-tipo="@Model.AtivoFinanceiro.Tipo" asp-route-id="@Model.AtivoFinanceiro.Id" asp-route-userId="@Model.AtivoFinanceiro.UtilizadorId">Cancelar</a>
         </div>
     </form>
 }
+
+</div>
