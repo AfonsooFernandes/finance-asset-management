@@ -39,6 +39,56 @@
             <dd class="col-sm-9">
                 @(Model.AtivoFinanceiro?.Imposto > 0 ? Model.AtivoFinanceiro.Imposto.ToString() : "N/A")
             </dd>
+            
+            <dt class="col-sm-3">Imposto Anual</dt>
+            <dd class="col-sm-9">
+                @if (Model.AtivoFinanceiro?.Imposto > 0)
+                {
+                    @if (Model.ImovelArrendado != null)
+                    {
+                        var rendaLiquida = Model.ImovelArrendado.ValorRenda;
+                        var imposto = rendaLiquida > 0 ? (rendaLiquida * Model.AtivoFinanceiro.Imposto) * 12 / 100 : 0;
+                        @(imposto > 0 ? imposto.ToString("F2") + " €" : "N/A")
+                    }
+                    else if (Model.DepositoPrazo != null)
+                    {
+                        var juros = Model.DepositoPrazo.Valor * Model.DepositoPrazo.TaxaJuroAnual / 100;
+                        var imposto = juros > 0 ? juros * Model.AtivoFinanceiro.Imposto / 100 : 0;
+                        @(imposto > 0 ? imposto.ToString("F2") + " €" : "N/A")
+                    }
+                    else if (Model.FundoInvestimento != null)
+                    {
+                        var juros = Model.FundoInvestimento.Montante * Model.FundoInvestimento.TaxaJuro / 100;
+                        var imposto = juros > 0 ? juros * Model.AtivoFinanceiro.Imposto / 100 : 0;
+                        @(imposto > 0 ? imposto.ToString("F2") + " €" : "N/A")
+                    }
+                    else
+                    {
+                        @:N/A
+                    }
+                }
+                else
+                {
+                    @:N/A
+                }
+            </dd>
+            
+            @if (Model.DepositoPrazo != null || Model.FundoInvestimento != null)
+            {
+                <dt class="col-sm-3">Juros Anuais</dt>
+                <dd class="col-sm-9">
+                    @if (Model.DepositoPrazo != null)
+                    {
+                        var juros = Model.DepositoPrazo.Valor * Model.DepositoPrazo.TaxaJuroAnual / 100;
+                        @(juros > 0 ? juros.ToString("F2") + " €" : "N/A")
+                    }
+                    else if (Model.FundoInvestimento != null)
+                    {
+                        var juros = Model.FundoInvestimento.Montante * Model.FundoInvestimento.TaxaJuro / 100;
+                        @(juros > 0 ? juros.ToString("F2") + " €" : "N/A")
+                    }
+                </dd>
+            }
         </dl>
 
         @if (Model.DepositoPrazo != null)
