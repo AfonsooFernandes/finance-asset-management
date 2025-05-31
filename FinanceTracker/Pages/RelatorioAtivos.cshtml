@@ -1,0 +1,32 @@
+﻿@page
+@model FinanceTracker.Pages.RelatorioAtivosModel
+@{
+    ViewData["Title"] = "Relatório de Ativos Financeiros";
+}
+<h2 style="text-align: center;">@ViewData["Title"]</h2>
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>Tipo de Ativo</th>
+        <th>Data de Início</th>
+        <th>Lucro Total Antes de Impostos (€)</th>
+        <th>Lucro Total Após Impostos (€)</th>
+        <th>Lucro Mensal Médio Antes de Impostos (€)</th>
+        <th>Lucro Mensal Médio Após Impostos (€)</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.RelatorioAtivos)
+    {
+        <tr>
+            <td>@item.TipoAtivo</td>
+            <td>@item.DataInicio.ToString("dd/MM/yyyy")</td>
+            <td>@item.LucroTotalAntesImpostos:F2</td>
+            <td>@item.LucroTotalAposImpostos:F2</td>
+            <td>@item.LucroMensalMedioAntesImpostos:F2</td>
+            <td>@item.LucroMensalMedioAposImpostos:F2</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<a href="/Menu" class="btn btn-secondary">Voltar</a>

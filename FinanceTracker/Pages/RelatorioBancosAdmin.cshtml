@@ -1,0 +1,26 @@
+﻿@page "{userId:int}"
+@model FinanceTracker.Pages.RelatorioBancosAdminModel
+@{
+    ViewData["Title"] = "Relatório de Bancos";
+}
+<h2 style="text-align: center;">@ViewData["Title"]</h2>
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>Banco</th>
+        <th>Total Depositado (€)</th>
+        <th>Juros Totais Pagos (€)</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.RelatorioBancos)
+    {
+        <tr>
+            <td>@item.Banco</td>
+            <td>@item.TotalDepositado:F2</td>
+            <td>@item.JurosTotaisPagos:F2</td>
+        </tr>
+    }
+    </tbody>
+</table>
+<a href="/Menu" class="btn btn-secondary">Voltar</a>

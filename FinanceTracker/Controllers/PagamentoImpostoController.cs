@@ -28,7 +28,7 @@ namespace FinanceTracker.Controllers
                 Id = p.Id,
                 AtivoId = p.AtivoId,
                 DataPagamento = p.DataPagamento,
-                Valor = p.Valor
+                Valor = p.Valor 
             });
 
             return Ok(dtoList);
@@ -47,7 +47,7 @@ namespace FinanceTracker.Controllers
                 Id = pagamento.Id,
                 AtivoId = pagamento.AtivoId,
                 DataPagamento = pagamento.DataPagamento,
-                Valor = pagamento.Valor
+                Valor = pagamento.Valor 
             };
 
             return Ok(dto);
@@ -84,7 +84,7 @@ namespace FinanceTracker.Controllers
                 return NotFound("Pagamento não encontrado.");
 
             pagamento.DataPagamento = dto.DataPagamento;
-            pagamento.Valor = dto.Valor;
+            pagamento.Valor = dto.Valor; 
             pagamento.AtivoId = dto.AtivoId;
 
             _context.PagamentoImpostos.Update(pagamento);

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinanceTracker.Models
 {
@@ -11,7 +12,7 @@ namespace FinanceTracker.Models
         public DateTime DataPagamento { get; set; }
 
         [Required(ErrorMessage = "O valor do pagamento é obrigatório.")]
-        [Range(0, float.MaxValue, ErrorMessage = "O valor deve ser um valor positivo.")]
-        public float Valor { get; set; }
+        [Range(0, double.MaxValue, ErrorMessage = "O valor deve ser um valor positivo.")]
+        public decimal Valor { get; set; }  
     }
 }

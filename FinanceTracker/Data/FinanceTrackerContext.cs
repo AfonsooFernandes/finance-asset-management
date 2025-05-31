@@ -17,7 +17,7 @@ namespace FinanceTracker.Data
         public DbSet<JurosMensaisFundo> JurosMensaisFundos { get; set; }
         public DbSet<ImovelArrendado> ImoveisArrendados { get; set; }
         public DbSet<PagamentoImpostos> PagamentoImpostos { get; set; }
-
+        public DbSet<Relatorio> Relatorios { get; set; } 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -61,6 +61,9 @@ namespace FinanceTracker.Data
                 .HasOne(pi => pi.AtivoFinanceiro)
                 .WithMany()
                 .HasForeignKey(pi => pi.AtivoId);
+
+            modelBuilder.Entity<Relatorio>()
+                .ToTable("Relatorios");  
         }
     }
 }
