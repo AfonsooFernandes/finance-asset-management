@@ -258,7 +258,7 @@ namespace FinanceTracker.Pages
                 _context.AtivosFinanceiros.Remove(ativo);
                 await _context.SaveChangesAsync();
                 Console.WriteLine($"AtivoFinanceiro removido: ID {id}, Tipo {tipo}");
-
+                
                 return RedirectToPage("/Index");
             }
             catch (AntiforgeryValidationException ex)

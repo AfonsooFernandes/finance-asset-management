@@ -1,7 +1,6 @@
 ﻿@page
 @model FinanceTracker.Pages.LoginModel
 
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -13,7 +12,7 @@
             event.preventDefault(); 
             
             const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
+            const palavraPasse = document.getElementById("palavra-passe").value;
 
             const response = await fetch("/api/auth/login", {
                 method: "POST",
@@ -22,7 +21,7 @@
                 },
                 body: JSON.stringify({
                     Email: email,
-                    Senha: senha
+                    Senha: palavraPasse
                 })
             });
 
@@ -49,15 +48,14 @@
     <span asp-validation-for="Email" style="color: red;"></span>
     <br />
 
-    <label>Senha:</label>
-    <input type="password" id="senha" required />
+    <label>Palavra-passe:</label>
+    <input type="password" id="palavra-passe" required />
     <span asp-validation-for="Senha" style="color: red;"></span>
     <br />
 
     <div style="text-align: center; margin-top: 2rem;">
         <button type="submit" class="btn-primary">Login</button>
     </div>
-    
 </form>
 
 <button type="button" onclick="window.location.href='@Url.Page("/register")'" class="btn-primary">

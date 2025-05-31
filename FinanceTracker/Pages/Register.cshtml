@@ -13,7 +13,7 @@
             
             const nome = document.getElementById("nome").value;
             const email = document.getElementById("email").value;
-            const senha = document.getElementById("senha").value;
+            const senha = document.getElementById("palavra-passe").value;
 
             const response = await fetch("/api/auth/register", {
                 method: "POST",

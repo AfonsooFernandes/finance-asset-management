@@ -5,22 +5,23 @@ html, body {
     font-family: 'Segoe UI', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: #f4f7fa;
     color: #1c1c1e;
-    height: 100%; /* A altura completa da página */
+    height: 100%;
     display: flex;
-    flex-direction: column; /* Alinhamento de cima para baixo */
-    justify-content: center; /* Centralização vertical */
-    align-items: center; /* Centralização horizontal */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Links */
 a, .btn-link {
-    color: #0066cc;
+    color: inherit;
     text-decoration: none;
     transition: color 0.2s;
 }
 
 a:hover, .btn-link:hover {
-    color: #004c99;
+    color: inherit;
+    text-decoration: underline;
 }
 
 /* Botões */
@@ -33,6 +34,11 @@ a:hover, .btn-link:hover {
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 86, 179, 0.15);
     transition: background-color 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    min-width: 150px;
 }
 
 .btn-primary:hover {
@@ -48,6 +54,11 @@ a:hover, .btn-link:hover {
     border-radius: 8px;
     font-weight: 500;
     transition: background-color 0.2s ease;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    min-width: 150px;
 }
 
 .btn-secondary:hover {
@@ -103,16 +114,16 @@ input:focus {
 .form-group {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centraliza os elementos dentro do form-group */
+    align-items: center;
     margin-bottom: 1rem;
 }
 
 /* Centralizando os botões dentro do form-group */
 button, .btn {
     width: auto;
-    max-width: 200px; /* Tamanho máximo para o botão */
+    max-width: 200px;
     margin: 10px 0;
-    align-self: center; /* Garante que o botão vai estar centralizado */
+    align-self: center;
 }
 
 /* Títulos */

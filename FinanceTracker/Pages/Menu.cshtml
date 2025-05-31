@@ -7,6 +7,16 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/styles/style.css"/>
     <title>Menu</title>
+    <style>
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        a:hover {
+            color: inherit;
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 <h1 style="text-align: center;">Menu</h1>
@@ -14,16 +24,12 @@
 <div style="text-align: center;">
     <a href="/AdicionarDeposito" class="btn-primary">Adicionar Depósito a Prazo</a>
     <br><br>
-        
     <a href="/AdicionarFundo" class="btn-primary">Adicionar Fundo de Investimento</a>
     <br><br>
-        
     <a href="/AdicionarImovel" class="btn-primary">Adicionar Imóvel Arrendado</a>
     <br><br>
-        
     <a href="#" id="listarAtivosLink" class="btn btn-primary mb-3">Listar Ativos</a>
     <br><br>
-        
     <a href="/Login" class="btn-secondary">Logout</a>
 </div>
 </body>
@@ -39,14 +45,9 @@
         if (userId) {
             listarAtivosLink.href = "/Listar_Ativos?userId=" + encodeURIComponent(userId);
             console.log("Link de Listar Ativos atualizado:", listarAtivosLink.href);
-            listarAtivosLink.addEventListener("click", function (e) {
-                console.log("Link Listar Ativos clicado, navegando para:", listarAtivosLink.href);
-            });
         } else {
-            console.log("Erro: userId não encontrado no localStorage em Menu.");
             listarAtivosLink.addEventListener("click", function (e) {
                 e.preventDefault();
-                console.log("Link clicado, mas userId ausente. Redirecionando para /Login.");
                 alert("Erro: Utilizador não autenticado. Por favor, volte a fazer login.");
                 window.location.href = "/Login";
             });

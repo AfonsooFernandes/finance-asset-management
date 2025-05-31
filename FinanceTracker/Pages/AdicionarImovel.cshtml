@@ -11,7 +11,6 @@
     @Html.AntiForgeryToken()
 
     <fieldset>
-        
         <input type="hidden" name="Ativo.UtilizadorId" id="Ativo_UtilizadorId" />
         <input type="hidden" name="Ativo.Tipo" value="Imóvel Arrendado"/>
 
@@ -58,7 +57,10 @@
         </div>
     </fieldset>
 
-    <button type="submit" class="btn-primary">Adicionar</button>
+    <div style="margin-top: 1rem; display: flex; justify-content: flex-end; gap: 10px;">
+        <button type="submit" class="btn-primary" style="padding: 8px 20px; min-width: 150px;">Adicionar</button>
+        <a href="/Menu" class="btn-secondary" style="padding: 8px 20px;">Voltar Atrás</a>
+    </div>
 </form>
 
 <script>
