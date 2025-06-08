@@ -1,7 +1,6 @@
 ﻿using FinanceTracker.Data;
 using FinanceTracker.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,14 +36,14 @@ namespace FinanceTracker.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Utilizador> ValidarCredenciais(string email, string senha)
+        public async Task<Utilizador?> ValidarCredenciais(string email, string senha)
         {
             string senhaHash = HashPassword(senha);
             return await _context.Utilizadores
                 .FirstOrDefaultAsync(u => u.Email == email && u.SenhaHash == senhaHash);
         }
 
-        public async Task<Utilizador> ObterUtilizadorPorId(int userId)
+        public async Task<Utilizador?> ObterUtilizadorPorId(int userId)
         {
             return await _context.Utilizadores.FindAsync(userId);
         }

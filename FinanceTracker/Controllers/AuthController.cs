@@ -2,6 +2,10 @@
 using System.Threading.Tasks;
 using FinanceTracker.Models;
 using FinanceTracker.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace FinanceTracker.Controllers
 {
@@ -9,9 +13,9 @@ namespace FinanceTracker.Controllers
     [Route("api/auth")]
     public class AuthController : ControllerBase
     {
-        private readonly AuthenticationService _authService;
+        private readonly AuthService _authService;
 
-        public AuthController(AuthenticationService authService)
+        public AuthController(AuthService authService)
         {
             _authService = authService;
         }
@@ -44,7 +48,35 @@ namespace FinanceTracker.Controllers
             if (user == null)
                 return BadRequest("Email ou palavra-passe incorretos.");
 
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.Email),
+                new Claim("UserId", user.Id.ToString()),
+                new Claim("UserType", user.TipoUtilizador)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+
             return Ok(new { message = "Login efetuado com sucesso.", userId = user.Id });
+        }
+
+        [HttpGet("TipoUtilizador")]
+        public async Task<IActionResult> GetTipoUtilizador([FromQuery] int userId)
+        {
+            var user = await _authService.ObterUtilizadorPorId(userId);
+            if (user == null)
+                return NotFound();
+
+            return Ok(new { tipoUtilizador = user.TipoUtilizador });
         }
     }
 }
