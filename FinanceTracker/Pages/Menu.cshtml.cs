@@ -1,22 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinanceTracker.Pages
 {
-    [Authorize]
     public class MenuModel : PageModel
     {
-        private readonly ILogger<MenuModel> _logger;
-
-        public MenuModel(ILogger<MenuModel> logger)
+        public IActionResult OnGet()
         {
-            _logger = logger;
+            return Page();
         }
 
-        public void OnGet()
-        {
-            _logger.LogInformation("Menu GET acessado.");
-        }
+        // Método para realizar logout
+        
     }
 }

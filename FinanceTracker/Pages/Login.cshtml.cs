@@ -1,22 +1,20 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
-using FinanceTracker.Services;
+using FinanceTracker.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinanceTracker.Pages
 {
     public class LoginModel : PageModel
     {
-        private readonly AuthService _authService;
+        private readonly HttpClient _httpClient;
 
-        public LoginModel(AuthService authService)
+        public LoginModel(IHttpClientFactory httpClientFactory)
         {
-            _authService = authService;
+            _httpClient = httpClientFactory.CreateClient();
         }
 
         [BindProperty]
@@ -30,39 +28,38 @@ namespace FinanceTracker.Pages
 
         public string Message { get; set; }
 
-        public void OnGet()
-        {
-            // GET vazio necessário
-        }
-
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
-                return Page();
-
-            var user = await _authService.ValidarCredenciais(Email, Senha);
-            if (user == null)
             {
-                Message = "Email ou palavra-passe incorretos.";
                 return Page();
             }
 
-            var claims = new List<Claim>
+            var loginDto = new LoginUserDto
             {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim("UserId", user.Id.ToString()),
-                new Claim("UserType", user.TipoUtilizador)
+                Email = Email,
+                Senha = Senha
             };
 
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var authProperties = new AuthenticationProperties { IsPersistent = true };
+            try
+            {
+                var response = await _httpClient.PostAsJsonAsync("http://localhost:5232/api/auth/login", loginDto);
 
-            await HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties);
-            
-            return Redirect("/menu");
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToPage("/Menu");
+                }
+                else
+                {
+                    Message = "Erro ao entrar. " + await response.Content.ReadAsStringAsync();
+                    return Page();
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                Message = "Erro na comunicação com a API: " + ex.Message;
+                return Page();
+            }
         }
     }
 }

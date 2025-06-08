@@ -1,4 +1,4 @@
-﻿@page "/login"
+﻿@page
 @model FinanceTracker.Pages.LoginModel
 
 <!DOCTYPE html>
@@ -29,7 +29,7 @@
                 const result = await response.json();
                 localStorage.setItem("userId", result.userId);
                 console.log("UTILIZADOR_ID: " + result.userId);
-                window.location.href = "/menu";
+                window.location.href = "/Menu";
             } else {
                 const errorText = await response.text();
                 document.getElementById("errorMessage").innerText = "Erro: " + errorText;
@@ -59,7 +59,7 @@
 </form>
 
 <button type="button" onclick="window.location.href='@Url.Page("/register")'" class="btn-primary">
-    Registar
+  Registar
 </button>
 
 <p id="errorMessage" style="color: red;"></p>
