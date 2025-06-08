@@ -1,27 +1,52 @@
-﻿using FinanceTracker.Models;
-using System.Net.Http;
-using System.Net.Http.Json;
+﻿using FinanceTracker.Data;
+using FinanceTracker.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace FinanceTracker.Services
 {
     public class AuthService
     {
-        private readonly HttpClient _httpClient;
+        private readonly FinanceTrackerContext _context;
 
-        public AuthService(HttpClient httpClient)
+        public AuthService(FinanceTrackerContext context)
         {
-            _httpClient = httpClient;
+            _context = context;
         }
 
-        public async Task<string> RegisterUser(RegisterUserDto user)
+        public async Task<bool> EmailExiste(string email)
         {
-            var response = await _httpClient.PostAsJsonAsync("api/auth/register", user);
-            
-            if (response.IsSuccessStatusCode)
-                return "Utilizador registado com sucesso.";
-            
-            return await response.Content.ReadAsStringAsync();
+            return await _context.Utilizadores.AnyAsync(u => u.Email == email);
+        }
+
+        public string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+            }
+        }
+
+        public async Task CriarUtilizador(Utilizador user)
+        {
+            _context.Utilizadores.Add(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Utilizador> ValidarCredenciais(string email, string senha)
+        {
+            string senhaHash = HashPassword(senha);
+            return await _context.Utilizadores
+                .FirstOrDefaultAsync(u => u.Email == email && u.SenhaHash == senhaHash);
+        }
+
+        public async Task<Utilizador> ObterUtilizadorPorId(int userId)
+        {
+            return await _context.Utilizadores.FindAsync(userId);
         }
     }
 }

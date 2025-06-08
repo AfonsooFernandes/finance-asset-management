@@ -18,51 +18,36 @@ namespace FinanceTracker.Services
         public async Task<IEnumerable<AtivoFinanceiroDto>> GetAllAtivos()
         {
             var response = await _httpClient.GetAsync("api/ativos");
-            
-            if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<IEnumerable<AtivoFinanceiroDto>>();
-
-            return new List<AtivoFinanceiroDto>();
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<IEnumerable<AtivoFinanceiroDto>>();
         }
 
         public async Task<AtivoFinanceiroDto> GetAtivoById(int id)
         {
             var response = await _httpClient.GetAsync($"api/ativos/{id}");
-            
-            if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<AtivoFinanceiroDto>();
-
-            return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<AtivoFinanceiroDto>();
         }
 
         public async Task<AtivoFinanceiroDto> CreateAtivo(AtivoFinanceiroDto ativo)
         {
             var response = await _httpClient.PostAsJsonAsync("api/ativos", ativo);
-
-            if (response.IsSuccessStatusCode)
-                return await response.Content.ReadFromJsonAsync<AtivoFinanceiroDto>();
-
-            return null;
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<AtivoFinanceiroDto>();
         }
 
         public async Task<string> UpdateAtivo(int id, AtivoFinanceiroDto ativo)
         {
             var response = await _httpClient.PutAsJsonAsync($"api/ativos/{id}", ativo);
-            
-            if (response.IsSuccessStatusCode)
-                return "Ativo financeiro atualizado com sucesso.";
-            
-            return await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCode();
+            return "Ativo financeiro atualizado com sucesso.";
         }
 
         public async Task<string> DeleteAtivo(int id)
         {
             var response = await _httpClient.DeleteAsync($"api/ativos/{id}");
-            
-            if (response.IsSuccessStatusCode)
-                return "Ativo financeiro removido com sucesso.";
-            
-            return await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCode();
+            return "Ativo financeiro removido com sucesso.";
         }
     }
 }

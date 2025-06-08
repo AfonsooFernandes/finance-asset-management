@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Adicionar Fundo de Investimento";
 }
-<link rel="stylesheet" href="/styles/style.css"/>
+<link rel="stylesheet" href="/styles/style.css" />
 
 <h2>Adicionar Fundo de Investimento</h2>
 
@@ -12,20 +12,20 @@
 
     <fieldset>
         <input type="hidden" name="Ativo.UtilizadorId" id="Ativo_UtilizadorId" />
-        <input type="hidden" name="Ativo.Tipo" value="Fundo de Investimento"/>
+        <input type="hidden" name="Ativo.Tipo" value="Fundo de Investimento" />
 
         <legend>Dados Gerais</legend>
         <div>
             <label for="Ativo_DataInicio">Data de Início</label>
-            <input name="Ativo.DataInicio" id="Ativo_DataInicio" type="date" class="form-control"/>
+            <input name="Ativo.DataInicio" id="Ativo_DataInicio" type="date" class="form-control" />
         </div>
         <div>
             <label for="Ativo_Duracao">Duração (em meses)</label>
-            <input name="Ativo.Duracao" id="Ativo_Duracao" class="form-control"/>
+            <input name="Ativo.Duracao" id="Ativo_Duracao" class="form-control" />
         </div>
         <div>
             <label for="Ativo_Imposto">Taxa de Imposto (%)</label>
-            <input name="Ativo.Imposto" id="Ativo_Imposto" class="form-control"/>
+            <input name="Ativo.Imposto" id="Ativo_Imposto" class="form-control" />
         </div>
     </fieldset>
 
@@ -45,9 +45,9 @@
         </div>
     </fieldset>
 
-    <div style="margin-top: 1rem; display: flex; justify-content: flex-end; gap: 10px;">
-        <button type="submit" class="btn-primary" style="padding: 8px 20px; min-width: 150px;">Adicionar</button>
-        <a href="/Menu" class="btn-secondary" style="padding: 8px 20px;">Voltar Atrás</a>
+    <div class="form-group">
+        <button type="submit" class="btn-primary">Adicionar</button>
+        <a href="/Menu" class="btn-secondary">Voltar Atrás</a>
     </div>
 </form>
 
