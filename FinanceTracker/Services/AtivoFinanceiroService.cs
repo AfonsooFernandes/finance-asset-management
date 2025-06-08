@@ -34,6 +34,14 @@ namespace FinanceTracker.Services
 
             return null;
         }
+        
+        public async Task<IEnumerable<AtivoFinanceiroDto>> GetAtivosByUserId(int userId)
+        {
+            var response = await _httpClient.GetAsync($"api/ativos/usuario/{userId}");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<IEnumerable<AtivoFinanceiroDto>>();
+        }
+
 
         public async Task<AtivoFinanceiroDto> CreateAtivo(AtivoFinanceiroDto ativo)
         {

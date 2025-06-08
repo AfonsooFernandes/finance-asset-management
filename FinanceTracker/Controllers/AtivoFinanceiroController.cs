@@ -116,5 +116,25 @@ namespace FinanceTracker.Controllers
 
             return Ok(new { message = "Ativo financeiro removido com sucesso." });
         }
+        [HttpGet("usuario/{userId}")]
+        public async Task<ActionResult<IEnumerable<AtivoFinanceiroDto>>> GetAtivosByUserId(int userId)
+        {
+            var ativos = await _context.AtivosFinanceiros
+                .Where(a => a.UtilizadorId == userId)
+                .ToListAsync();
+
+            var ativosDto = ativos.ConvertAll(a => new AtivoFinanceiroDto
+            {
+                Id = a.Id,
+                UtilizadorId = a.UtilizadorId,
+                Tipo = a.Tipo,
+                DataInicio = a.DataInicio,
+                Duracao = a.Duracao,
+                Imposto = a.Imposto
+            });
+
+            return Ok(ativosDto);
+        }
+
     }
 }
