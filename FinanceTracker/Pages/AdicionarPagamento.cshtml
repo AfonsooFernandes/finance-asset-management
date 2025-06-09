@@ -33,7 +33,7 @@
     </div>
 
     <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 10px;">
-        <button type="submit" class="btn-primary button-same-size">Adicionar</button>
+        <button type="submit" class="btn-primary button-same-size">Pagar</button>
         <a href="/Menu" class="btn-secondary button-same-size">Voltar</a>
         <a href="/RelatorioImpostos" class="btn-secondary button-same-size">Ver Relatório de Impostos</a>
     </div>
@@ -45,18 +45,18 @@
         const valorInput = document.getElementById("Valor");
         const dataPagamentoInput = document.getElementById("DataPagamento");
         const ativos = @Html.Raw(JsonConvert.SerializeObject(Model.Ativos));
-        
+
         const hoje = new Date();
         const hojeStr = hoje.toISOString().split('T')[0];
         dataPagamentoInput.value = hojeStr;
 
         ativoSelect.addEventListener("change", function () {
             const selectedId = parseInt(this.value);
-            const ativo = ativos.find(a => a.Id === selectedId); 
+            const ativo = ativos.find(a => a.Id === selectedId);
 
             if (ativo) {
-                const imposto = ativo.Imposto; 
-                const lucroAntesImpostos = ativo.LucroTotalAntesImpostos; 
+                const imposto = ativo.Imposto;
+                const lucroAntesImpostos = ativo.LucroTotalAntesImpostos || 0;
                 const valor = lucroAntesImpostos * (imposto / 100);
                 valorInput.value = valor.toFixed(2);
             } else {

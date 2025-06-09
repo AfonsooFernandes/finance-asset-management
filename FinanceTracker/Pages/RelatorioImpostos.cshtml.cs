@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace FinanceTracker.Pages
 {
@@ -21,13 +22,20 @@ namespace FinanceTracker.Pages
         public List<RelatorioImpostoDto> RelatorioImpostos { get; set; }
         public string ErrorMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync()
+        public async Task<IActionResult> OnGetAsync(int userId)
         {
+            if (userId <= 0)
+            {
+                ErrorMessage = "ID de utilizador inválido.";
+                return Page();
+            }
+
             try
             {
                 RelatorioImpostos = await _context.PagamentoImpostos
                     .Include(p => p.AtivoFinanceiro)
                     .ThenInclude(a => a.Utilizador)
+                    .Where(p => p.AtivoFinanceiro.UtilizadorId == userId)
                     .OrderByDescending(p => p.DataPagamento)
                     .Select(p => new RelatorioImpostoDto
                     {
