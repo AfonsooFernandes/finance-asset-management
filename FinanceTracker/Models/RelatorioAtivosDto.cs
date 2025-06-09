@@ -4,8 +4,8 @@ public class RelatorioAtivosDto
 {
     public string TipoAtivo { get; set; }
     public DateTime DataInicio { get; set; }
-    public float LucroTotalAntesImpostos { get; set; }
-    public float LucroTotalAposImpostos { get; set; }
-    public float LucroMensalMedioAntesImpostos { get; set; }
-    public float LucroMensalMedioAposImpostos { get; set; }
+    public double LucroTotalAntesImpostos { get; set; }
+    public double LucroTotalAposImpostos { get; set; }
+    public double LucroMensalMedioAntesImpostos { get; set; }
+    public double LucroMensalMedioAposImpostos { get; set; }
 }

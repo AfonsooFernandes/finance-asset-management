@@ -9,7 +9,7 @@ namespace FinanceTracker.Models
 
         [Required(ErrorMessage = "O valor é obrigatório.")]
         [Range(0, float.MaxValue, ErrorMessage = "O valor deve ser um valor positivo.")]
-        public float Valor { get; set; }
+        public double Valor { get; set; }
 
         [Required(ErrorMessage = "O banco é obrigatório.")]
         [StringLength(100, ErrorMessage = "O nome do banco não pode ter mais de 100 caracteres.")]
@@ -25,6 +25,6 @@ namespace FinanceTracker.Models
 
         [Required(ErrorMessage = "A taxa de juro anual é obrigatória.")]
         [Range(0, 100, ErrorMessage = "A taxa de juro deve ser entre 0 e 100.")]
-        public float TaxaJuroAnual { get; set; }
+        public double TaxaJuroAnual { get; set; }
     }
 }

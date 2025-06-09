@@ -6,7 +6,7 @@
         public int FundoId { get; set; }
         public int Mes { get; set; }
         public int Ano { get; set; }
-        public float Taxa { get; set; }
+        public double Taxa { get; set; }
 
         public FundoInvestimento FundoInvestimento { get; set; }
     }

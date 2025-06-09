@@ -17,18 +17,18 @@ namespace FinanceTracker.Models
 
         [Required(ErrorMessage = "O valor do imóvel é obrigatório.")]
         [Range(0, float.MaxValue, ErrorMessage = "O valor do imóvel deve ser um valor positivo.")]
-        public float ValorImovel { get; set; }
+        public double ValorImovel { get; set; }
 
         [Required(ErrorMessage = "O valor da renda é obrigatório.")]
         [Range(0, float.MaxValue, ErrorMessage = "O valor da renda deve ser um valor positivo.")]
-        public float ValorRenda { get; set; }
+        public double ValorRenda { get; set; }
 
         [Required(ErrorMessage = "O valor do condomínio é obrigatório.")]
         [Range(0, float.MaxValue, ErrorMessage = "O valor do condomínio deve ser um valor positivo.")]
-        public float ValorCondominio { get; set; }
+        public double ValorCondominio { get; set; }
 
         [Required(ErrorMessage = "Outras despesas são obrigatórias.")]
         [Range(0, float.MaxValue, ErrorMessage = "As outras despesas devem ser um valor positivo.")]
-        public float OutrasDespesas { get; set; }
+        public double OutrasDespesas { get; set; }
     }
 }

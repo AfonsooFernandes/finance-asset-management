@@ -8,8 +8,8 @@ namespace FinanceTracker.Data
         public int Id { get; set; }
         public int AtivoId { get; set; }
         public string Nome { get; set; }
-        public float Montante { get; set; }
-        public float TaxaJuro { get; set; }
+        public double Montante { get; set; }
+        public double TaxaJuro { get; set; }
 
         public AtivoFinanceiro AtivoFinanceiro { get; set; }
 

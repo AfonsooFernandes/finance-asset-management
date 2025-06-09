@@ -17,6 +17,9 @@ builder.Services.AddDbContext<FinanceTrackerContext>(options => options.UseNpgsq
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<AtivoFinanceiroService>();
 builder.Services.AddScoped<DepositoPrazoService>();
+builder.Services.AddScoped<ImovelArrendadoService>();
+builder.Services.AddScoped<FundoInvestimentoService>();
+
 
 builder.Services.AddHttpClient<AtivoFinanceiroService>(client =>
 {

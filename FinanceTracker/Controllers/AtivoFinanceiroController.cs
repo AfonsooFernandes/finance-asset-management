@@ -2,8 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using FinanceTracker.Data;
 using FinanceTracker.Models;
+using System;
 
 namespace FinanceTracker.Controllers
 {
@@ -73,12 +75,11 @@ namespace FinanceTracker.Controllers
             };
 
             _context.AtivosFinanceiros.Add(ativo);
-            Console.WriteLine($"- Id: {dto.UtilizadorId}");
             await _context.SaveChangesAsync();
 
-            dto.Id = ativo.Id; // Preenche o ID gerado
+            dto.Id = ativo.Id;
 
-            return Ok(dto); // Retorna o DTO com ID
+            return Ok(dto);
         }
 
         [HttpPut("{id}")]
@@ -93,7 +94,7 @@ namespace FinanceTracker.Controllers
                 return NotFound("Ativo financeiro não encontrado.");
 
             ativo.Tipo = dto.Tipo;
-            ativo.DataInicio = dto.DataInicio;
+            ativo.DataInicio = DateTime.SpecifyKind(dto.DataInicio, DateTimeKind.Utc);
             ativo.Duracao = dto.Duracao;
             ativo.Imposto = dto.Imposto;
 
@@ -116,6 +117,7 @@ namespace FinanceTracker.Controllers
 
             return Ok(new { message = "Ativo financeiro removido com sucesso." });
         }
+
         [HttpGet("usuario/{userId}")]
         public async Task<ActionResult<IEnumerable<AtivoFinanceiroDto>>> GetAtivosByUserId(int userId)
         {
@@ -135,6 +137,5 @@ namespace FinanceTracker.Controllers
 
             return Ok(ativosDto);
         }
-
     }
 }

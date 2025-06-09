@@ -34,6 +34,20 @@ namespace FinanceTracker.Services
 
             return null;
         }
+        
+        public async Task<DepositoPrazoDto> GetDepositoByAtivoId(int ativoId)
+        {
+            // Se sua API tem essa rota
+            var response = await _httpClient.GetAsync($"api/depositos/ativo/{ativoId}");
+        
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<DepositoPrazoDto>();
+
+            // Caso contrário, busca tudo e filtra localmente
+            var depositos = await GetAllDepositos();
+            return depositos.FirstOrDefault(d => d.AtivoId == ativoId);
+        }
+
 
         public async Task<string> CreateDeposito(DepositoPrazoDto deposito)
         {

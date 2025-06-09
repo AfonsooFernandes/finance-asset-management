@@ -17,6 +17,6 @@ namespace FinanceTracker.Models
 
         [Required(ErrorMessage = "A taxa de juros é obrigatória.")]
         [Range(0, float.MaxValue, ErrorMessage = "A taxa de juros deve ser um valor positivo.")]
-        public float Taxa { get; set; }
+        public double Taxa { get; set; }
     }
 }

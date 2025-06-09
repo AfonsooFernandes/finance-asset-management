@@ -33,7 +33,7 @@ public class RelatorioAtivosModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int userId)
     {
-        var ativos = await _ativoFinanceiroService.GetAtivosByUserId(userId); // <- Aqui assume que retorna uma lista
+        var ativos = (List<AtivoFinanceiroDto>)await _ativoFinanceiroService.GetAtivosByUserId(userId); // <- Aqui assume que retorna uma lista
         if (ativos == null || !ativos.Any())
         {
             ErrorMessage = "Nenhum ativo encontrado para este utilizador.";
@@ -69,7 +69,7 @@ public class RelatorioAtivosModel : PageModel
             }
             else if (ativo.Tipo == "Depósito a Prazo")
             {
-                var deposito = await _depositoPrazoService.GetDepositoById(ativo.Id);
+                var deposito = await _depositoPrazoService.GetDepositoByAtivoId(ativo.Id);
                 if (deposito != null)
                 {
                     var jurosAnuais = deposito.Valor * deposito.TaxaJuroAnual / 100;
