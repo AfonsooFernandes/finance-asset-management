@@ -4,6 +4,7 @@ using FinanceTracker.Data;
 using FinanceTracker.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FinanceTracker.Pages
@@ -18,19 +19,33 @@ namespace FinanceTracker.Pages
         }
 
         public List<RelatorioImpostoDto> RelatorioImpostos { get; set; }
+        public string ErrorMessage { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            RelatorioImpostos = await _context.PagamentoImpostos
-                .Include(p => p.AtivoFinanceiro)
-                .ThenInclude(a => a.Utilizador)
-                .Select(p => new RelatorioImpostoDto
+            try
+            {
+                RelatorioImpostos = await _context.PagamentoImpostos
+                    .Include(p => p.AtivoFinanceiro)
+                    .ThenInclude(a => a.Utilizador)
+                    .OrderByDescending(p => p.DataPagamento)
+                    .Select(p => new RelatorioImpostoDto
+                    {
+                        TipoAtivo = p.AtivoFinanceiro.Tipo,
+                        DataPagamento = p.DataPagamento,
+                        ValorImposto = p.Valor
+                    })
+                    .ToListAsync();
+
+                if (RelatorioImpostos == null || !RelatorioImpostos.Any())
                 {
-                    TipoAtivo = p.AtivoFinanceiro.Tipo,
-                    DataPagamento = p.DataPagamento,
-                    ValorImposto = p.Valor
-                })
-                .ToListAsync();
+                    ErrorMessage = "Nenhum pagamento de imposto foi encontrado.";
+                }
+            }
+            catch
+            {
+                ErrorMessage = "Ocorreu um erro ao carregar o relatório de impostos.";
+            }
 
             return Page();
         }

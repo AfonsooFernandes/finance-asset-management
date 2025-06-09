@@ -1,0 +1,67 @@
+﻿@page
+@model FinanceTracker.Pages.AdicionarPagamentoModel
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Adicionar Pagamento de Impostos";
+}
+<link rel="stylesheet" href="/styles/style.css" />
+
+<h2>Adicionar Pagamento de Impostos</h2>
+
+<form method="post">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="AtivoId">Ativo</label>
+        <select name="Pagamento.AtivoId" id="AtivoId" class="form-control" required>
+            <option value="">Selecione o Ativo</option>
+            @foreach (var ativo in Model.Ativos)
+            {
+                <option value="@ativo.Id">@ativo.Tipo - @ativo.DataInicio.ToString("dd/MM/yyyy")</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="DataPagamento">Data do Pagamento</label>
+        <input type="date" name="Pagamento.DataPagamento" id="DataPagamento" class="form-control" required readonly />
+    </div>
+
+    <div class="form-group">
+        <label for="Valor">Valor (€)</label>
+        <input type="number" step="0.01" name="Pagamento.Valor" id="Valor" class="form-control" readonly />
+    </div>
+
+    <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 10px;">
+        <button type="submit" class="btn-primary button-same-size">Adicionar</button>
+        <a href="/Menu" class="btn-secondary button-same-size">Voltar</a>
+        <a href="/RelatorioImpostos" class="btn-secondary button-same-size">Ver Relatório de Impostos</a>
+    </div>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ativoSelect = document.getElementById("AtivoId");
+        const valorInput = document.getElementById("Valor");
+        const dataPagamentoInput = document.getElementById("DataPagamento");
+        const ativos = @Html.Raw(JsonConvert.SerializeObject(Model.Ativos));
+        
+        const hoje = new Date();
+        const hojeStr = hoje.toISOString().split('T')[0];
+        dataPagamentoInput.value = hojeStr;
+
+        ativoSelect.addEventListener("change", function () {
+            const selectedId = parseInt(this.value);
+            const ativo = ativos.find(a => a.Id === selectedId); 
+
+            if (ativo) {
+                const imposto = ativo.Imposto; 
+                const lucroAntesImpostos = ativo.LucroTotalAntesImpostos; 
+                const valor = lucroAntesImpostos * (imposto / 100);
+                valorInput.value = valor.toFixed(2);
+            } else {
+                valorInput.value = "";
+            }
+        });
+    });
+</script>

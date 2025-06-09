@@ -38,7 +38,6 @@ a:hover, .btn-link:hover {
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    min-width: 150px;
 }
 
 .btn-primary:hover {
@@ -58,7 +57,6 @@ a:hover, .btn-link:hover {
     display: inline-block;
     text-align: center;
     text-decoration: none;
-    min-width: 150px;
 }
 
 .btn-secondary:hover {
@@ -153,4 +151,12 @@ h1, h2, h3 {
 
 .blazor-error-boundary::after {
     content: "Ocorreu um erro inesperado.";
+}
+
+.button-same-size {
+    width: 200px;
+    text-align: center;
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 5px 0;
 }
