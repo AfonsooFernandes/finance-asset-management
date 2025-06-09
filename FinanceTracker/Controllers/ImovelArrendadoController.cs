@@ -107,6 +107,31 @@ namespace FinanceTracker.Controllers
 
             return Ok(new { message = "Imóvel arrendado atualizado com sucesso." });
         }
+        
+        [HttpGet("ativo/{ativoId}")]
+        public async Task<ActionResult<ImovelArrendadoDto>> GetImovelByAtivoId(int ativoId)
+        {
+            var imovel = await _context.ImoveisArrendados
+                .FirstOrDefaultAsync(i => i.AtivoId == ativoId);
+
+            if (imovel == null)
+                return NotFound("Imóvel arrendado não encontrado com o AtivoId fornecido.");
+
+            var dto = new ImovelArrendadoDto
+            {
+                Id = imovel.Id,
+                AtivoId = imovel.AtivoId,
+                Designacao = imovel.Designacao,
+                Localizacao = imovel.Localizacao,
+                ValorImovel = imovel.ValorImovel,
+                ValorRenda = imovel.ValorRenda,
+                ValorCondominio = imovel.ValorCondominio,
+                OutrasDespesas = imovel.OutrasDespesas
+            };
+
+            return Ok(dto);
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteImovel(int id)

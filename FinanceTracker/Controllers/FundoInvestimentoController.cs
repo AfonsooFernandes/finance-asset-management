@@ -54,7 +54,27 @@ namespace FinanceTracker.Controllers
 
             return Ok(dto);
         }
+        [HttpGet("ativo/{ativoId}")]
+        public async Task<ActionResult<FundoInvestimentoDto>> GetFundoByAtivoId(int ativoId)
+        {
+            var fundo = await _context.FundosInvestimento
+                .FirstOrDefaultAsync(f => f.AtivoId == ativoId);
 
+            if (fundo == null)
+                return NotFound("Fundo de investimento não encontrado.");
+
+            var dto = new FundoInvestimentoDto
+            {
+                Id = fundo.Id,
+                AtivoId = fundo.AtivoId,
+                Nome = fundo.Nome,
+                Montante = fundo.Montante,
+                TaxaJuro = fundo.TaxaJuro
+            };
+
+            return Ok(dto);
+        }
+        
         [HttpPost]
         public async Task<ActionResult> CreateFundo([FromBody] FundoInvestimentoDto dto)
         {

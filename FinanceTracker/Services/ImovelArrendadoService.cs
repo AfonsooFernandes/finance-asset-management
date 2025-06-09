@@ -44,6 +44,17 @@ namespace FinanceTracker.Services
             
             return await response.Content.ReadAsStringAsync();
         }
+        
+        public async Task<ImovelArrendadoDto> GetImovelByAtivoId(int ativoId)
+        {
+            var response = await _httpClient.GetAsync($"api/imoveis/ativo/{ativoId}");
+
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<ImovelArrendadoDto>();
+
+            return null;
+        }
+
 
         public async Task<string> UpdateImovel(int id, ImovelArrendadoDto imovel)
         {

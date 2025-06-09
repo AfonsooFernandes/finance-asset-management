@@ -60,7 +60,7 @@ public class RelatorioAtivosModel : PageModel
 
             if (ativo.Tipo == "Imóvel Arrendado")
             {
-                var imovel = await _imovelArrendadoService.GetImovelById(ativo.Id);
+                var imovel = await _imovelArrendadoService.GetImovelByAtivoId(ativo.Id);
                 if (imovel != null)
                 {
                     var rendaLiquida = imovel.ValorRenda - imovel.ValorCondominio - imovel.OutrasDespesas;
@@ -78,7 +78,7 @@ public class RelatorioAtivosModel : PageModel
             }
             else if (ativo.Tipo == "Fundo de Investimento")
             {
-                var fundo = await _fundoInvestimentoService.GetFundoById(ativo.Id);
+                var fundo = await _fundoInvestimentoService.GetFundoByAtivoId(ativo.Id);
                 if (fundo != null)
                 {
                     var jurosAnuais = fundo.Montante * fundo.TaxaJuro / 100;

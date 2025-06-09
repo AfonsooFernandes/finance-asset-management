@@ -54,6 +54,18 @@ namespace FinanceTracker.Services
             
             return await response.Content.ReadAsStringAsync();
         }
+        
+        
+        public async Task<FundoInvestimentoDto> GetFundoByAtivoId(int ativoId)
+        {
+            var response = await _httpClient.GetAsync($"api/fundos/ativo/{ativoId}");
+
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<FundoInvestimentoDto>();
+
+            return null;
+        }
+
 
         public async Task<string> DeleteFundo(int id)
         {
