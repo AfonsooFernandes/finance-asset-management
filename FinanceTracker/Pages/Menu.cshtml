@@ -32,7 +32,7 @@
     <br><br>
     <a href="#" id="relatorioAtivosLink" class="btn-primary">Relatório de Ativos Financeiros</a>
     <br><br>
-    <a href="/RelatorioImpostos" class="btn-primary">Relatório de Pagamentos de Impostos</a>
+    <a href="#" id="relatorioImpostosLink" class="btn-primary">Relatório de Pagamentos de Impostos</a>
     <br><br>
     <div id="relatorioAdminContainer" style="display:none;">
         <a id="relatorioBancosAdminLink" class="btn-primary">Relatório de Bancos (Admin)</a>
@@ -58,10 +58,12 @@
 
         const listarAtivosLink = document.getElementById("listarAtivosLink");
         const relatorioAtivosLink = document.getElementById("relatorioAtivosLink");
+        const relatorioImpostosLink = document.getElementById("relatorioImpostosLink");
         const relatorioBancosAdminLink = document.getElementById("relatorioBancosAdminLink");
 
         listarAtivosLink.href = "/Listar_Ativos?userId=" + encodeURIComponent(userId);
         relatorioAtivosLink.href = "/RelatorioAtivos?userId=" + encodeURIComponent(userId);
+        relatorioImpostosLink.href = "/RelatorioImpostos?userId=" + encodeURIComponent(userId);
         relatorioBancosAdminLink.href = "/RelatorioBancosAdmin/" + encodeURIComponent(userId);
 
         fetch('/api/auth/TipoUtilizador?userId=' + encodeURIComponent(userId))

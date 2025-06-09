@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinanceTracker.Models
 {
@@ -21,5 +22,7 @@ namespace FinanceTracker.Models
         [Required(ErrorMessage = "O imposto é obrigatório.")]
         [Range(0, float.MaxValue, ErrorMessage = "O imposto deve ser um valor positivo.")]
         public float Imposto { get; set; }
+        
+        public decimal LucroTotalAntesImpostos { get; set; }
     }
 }
