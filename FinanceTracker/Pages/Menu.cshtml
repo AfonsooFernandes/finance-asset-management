@@ -35,7 +35,7 @@
     <a href="/RelatorioImpostos" class="btn-primary">Relatório de Pagamentos de Impostos</a>
     <br><br>
     <div id="relatorioAdminContainer" style="display:none;">
-        <a href="/RelatorioBancosAdmin" class="btn-primary">Relatório de Bancos (Admin)</a>
+        <a id="relatorioBancosAdminLink" class="btn-primary">Relatório de Bancos (Admin)</a>
     </div>
     <br><br>
     <button onclick="logoutUser()" class="btn-secondary">Logout</button>
@@ -43,7 +43,7 @@
 
 <script>
     function logoutUser() {
-        localStorage.clear(); 
+        localStorage.clear();
         window.location.href = "/Login";
     }
 
@@ -58,9 +58,11 @@
 
         const listarAtivosLink = document.getElementById("listarAtivosLink");
         const relatorioAtivosLink = document.getElementById("relatorioAtivosLink");
+        const relatorioBancosAdminLink = document.getElementById("relatorioBancosAdminLink");
 
         listarAtivosLink.href = "/Listar_Ativos?userId=" + encodeURIComponent(userId);
         relatorioAtivosLink.href = "/RelatorioAtivos?userId=" + encodeURIComponent(userId);
+        relatorioBancosAdminLink.href = "/RelatorioBancosAdmin/" + encodeURIComponent(userId);
 
         fetch('/api/auth/TipoUtilizador?userId=' + encodeURIComponent(userId))
             .then(response => response.json())

@@ -39,11 +39,4 @@ namespace FinanceTracker.Pages
             return Page();
         }
     }
-
-    public class RelatorioBancoDto
-    {
-        public string Banco { get; set; }
-        public decimal TotalDepositado { get; set; }
-        public decimal JurosTotaisPagos { get; set; }
-    }
 }

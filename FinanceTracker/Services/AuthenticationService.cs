@@ -43,5 +43,12 @@ namespace FinanceTracker.Services
             var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
             return BitConverter.ToString(hashedBytes).Replace("-", "").ToLowerInvariant();
         }
+        
+        public async Task<Utilizador> ObterUtilizadorPorId(int userId)
+        {
+            // Assumindo que tens acesso ao contexto de BD (_context)
+            return await _context.Utilizadores.FindAsync(userId);
+        }
+
     }
 }

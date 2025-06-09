@@ -46,5 +46,16 @@ namespace FinanceTracker.Controllers
 
             return Ok(new { message = "Login efetuado com sucesso.", userId = user.Id });
         }
+        
+        [HttpGet("TipoUtilizador")]
+        public async Task<IActionResult> GetTipoUtilizador(int userId)
+        {
+            var utilizador = await _authService.ObterUtilizadorPorId(userId);
+            if (utilizador == null)
+                return NotFound();
+
+            return Ok(new { tipoUtilizador = utilizador.TipoUtilizador });
+        }
+
     }
 }
