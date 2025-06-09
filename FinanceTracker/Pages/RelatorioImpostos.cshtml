@@ -50,3 +50,16 @@
         <a href="/Menu" class="btn-secondary button-same-size">Voltar</a>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userId = localStorage.getItem("userId");
+        console.log("UserId carregado: ", userId);
+
+        // Exemplo: redirecionar se não existir
+        if (!userId) {
+            alert("Utilizador não autenticado.");
+            window.location.href = "/Login";
+        }
+    });
+</script>

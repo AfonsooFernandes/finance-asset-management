@@ -35,7 +35,8 @@
     <div style="margin-top: 1rem; display: flex; justify-content: center; gap: 10px;">
         <button type="submit" class="btn-primary button-same-size">Pagar</button>
         <a href="/Menu" class="btn-secondary button-same-size">Voltar</a>
-        <a href="/RelatorioImpostos" class="btn-secondary button-same-size">Ver Relatório de Impostos</a>
+        <!-- Botão com href gerado via JavaScript -->
+        <a id="relatorioLink" class="btn-secondary button-same-size">Ver Relatório de Impostos</a>
     </div>
 </form>
 
@@ -63,5 +64,16 @@
                 valorInput.value = "";
             }
         });
+
+        // Adiciona o userId à URL do botão de relatório
+        const userId = localStorage.getItem("userId");
+        const relatorioLink = document.getElementById("relatorioLink");
+
+        if (userId && relatorioLink) {
+            relatorioLink.href = `/RelatorioImpostos?userId=${encodeURIComponent(userId)}`;
+        } else {
+            // Em caso de erro, redireciona sem userId
+            relatorioLink.href = "/RelatorioImpostos";
+        }
     });
 </script>

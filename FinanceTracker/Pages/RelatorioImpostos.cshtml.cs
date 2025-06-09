@@ -19,12 +19,15 @@ namespace FinanceTracker.Pages
             _context = context;
         }
 
+        [BindProperty(SupportsGet = true)]
+        public int UserId { get; set; }
+
         public List<RelatorioImpostoDto> RelatorioImpostos { get; set; }
         public string ErrorMessage { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int userId)
+        public async Task<IActionResult> OnGetAsync()
         {
-            if (userId <= 0)
+            if (UserId <= 0)
             {
                 ErrorMessage = "ID de utilizador inválido.";
                 return Page();
@@ -35,7 +38,7 @@ namespace FinanceTracker.Pages
                 RelatorioImpostos = await _context.PagamentoImpostos
                     .Include(p => p.AtivoFinanceiro)
                     .ThenInclude(a => a.Utilizador)
-                    .Where(p => p.AtivoFinanceiro.UtilizadorId == userId)
+                    .Where(p => p.AtivoFinanceiro.UtilizadorId == UserId)
                     .OrderByDescending(p => p.DataPagamento)
                     .Select(p => new RelatorioImpostoDto
                     {
