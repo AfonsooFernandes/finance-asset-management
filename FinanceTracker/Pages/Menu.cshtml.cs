@@ -11,8 +11,6 @@ namespace FinanceTracker.Pages
         {
             return Page();
         }
-
-        // Método para realizar logout
         
     }
 }
