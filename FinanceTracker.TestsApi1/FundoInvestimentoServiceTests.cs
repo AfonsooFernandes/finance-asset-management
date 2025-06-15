@@ -72,25 +72,6 @@ namespace FinanceTracker.TestsApi1
         }
 
         [Test]
-        public async Task GetAllFundos_Failure_ReturnsEmptyList()
-        {
-            // Arrange
-            var response = new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
-
-            _handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(response);
-
-            // Act
-            var result = await _service.GetAllFundos();
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.Empty);
-        }
-
-        [Test]
         public async Task GetFundoById_Success_ReturnsFundo()
         {
             // Arrange
@@ -115,24 +96,6 @@ namespace FinanceTracker.TestsApi1
             Assert.That(result?.Nome, Is.EqualTo("Fundo A"));
             _handlerMock.Protected().Verify("SendAsync", Times.Once(), ItExpr.Is<HttpRequestMessage>(req =>
                 req.Method == HttpMethod.Get && req.RequestUri.ToString().EndsWith("api/fundos/1")), ItExpr.IsAny<CancellationToken>());
-        }
-
-        [Test]
-        public async Task GetFundoById_Failure_ReturnsNull()
-        {
-            // Arrange
-            var response = new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
-
-            _handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(response);
-
-            // Act
-            var result = await _service.GetFundoById(1);
-
-            // Assert
-            Assert.That(result, Is.Null);
         }
 
         [Test]

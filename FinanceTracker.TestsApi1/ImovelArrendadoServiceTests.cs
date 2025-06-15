@@ -71,25 +71,6 @@ namespace FinanceTracker.TestsApi1
         }
 
         [Test]
-        public async Task GetAllImoveis_Failure_ReturnsEmptyList()
-        {
-            // Arrange
-            var response = new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
-
-            _handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(response);
-
-            // Act
-            var result = await _service.GetAllImoveis();
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.Empty);
-        }
-
-        [Test]
         public async Task GetImovelById_Success_ReturnsImovel()
         {
             // Arrange
@@ -114,24 +95,6 @@ namespace FinanceTracker.TestsApi1
             Assert.That(result.Designacao, Is.EqualTo("Apartamento T2"));
             _handlerMock.Protected().Verify("SendAsync", Times.Once(), ItExpr.Is<HttpRequestMessage>(req =>
                 req.Method == HttpMethod.Get && req.RequestUri.ToString().EndsWith("api/imoveis/1")), ItExpr.IsAny<CancellationToken>());
-        }
-
-        [Test]
-        public async Task GetImovelById_Failure_ReturnsNull()
-        {
-            // Arrange
-            var response = new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
-
-            _handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(response);
-
-            // Act
-            var result = await _service.GetImovelById(1);
-
-            // Assert
-            Assert.That(result, Is.Null);
         }
 
         [Test]

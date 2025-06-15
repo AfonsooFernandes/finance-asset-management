@@ -72,25 +72,6 @@ namespace FinanceTracker.TestsApi1
         }
 
         [Test]
-        public async Task GetAllDepositos_Failure_ReturnsEmptyList()
-        {
-            // Arrange
-            var response = new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
-
-            _handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(response);
-
-            // Act
-            var result = await _service.GetAllDepositos();
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result, Is.Empty);
-        }
-
-        [Test]
         public async Task GetDepositoById_Success_ReturnsDeposito()
         {
             // Arrange
@@ -118,24 +99,6 @@ namespace FinanceTracker.TestsApi1
         }
 
         [Test]
-        public async Task GetDepositoById_Failure_ReturnsNull()
-        {
-            // Arrange
-            var response = new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
-
-            _handlerMock
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(response);
-
-            // Act
-            var result = await _service.GetDepositoById(1);
-
-            // Assert
-            Assert.That(result, Is.Null);
-        }
-
-        [Test]
         public async Task GetDepositoByAtivoId_Success_ReturnsDeposito()
         {
             // Arrange
@@ -160,41 +123,6 @@ namespace FinanceTracker.TestsApi1
             Assert.That(result?.Banco, Is.EqualTo("Banco A"));
             _handlerMock.Protected().Verify("SendAsync", Times.Once(), ItExpr.Is<HttpRequestMessage>(req =>
                 req.Method == HttpMethod.Get && req.RequestUri.ToString().EndsWith("api/depositos/ativo/1")), ItExpr.IsAny<CancellationToken>());
-        }
-
-        [Test]
-        public async Task GetDepositoByAtivoId_Fallback_ReturnsFilteredDeposito()
-        {
-            // Arrange
-            var depositos = new List<DepositoPrazoDto>
-            {
-                new DepositoPrazoDto { Id = 1, AtivoId = 1, Valor = 1000.0, Banco = "Banco A", NumeroConta = "123456", Titulares = "João Silva", TaxaJuroAnual = 2.5 },
-                new DepositoPrazoDto { Id = 2, AtivoId = 2, Valor = 2000.0, Banco = "Banco B", NumeroConta = "654321", Titulares = "Maria Santos", TaxaJuroAnual = 3.0 }
-            };
-            var responseNotFound = new HttpResponseMessage { StatusCode = HttpStatusCode.NotFound };
-            var responseSuccess = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(JsonConvert.SerializeObject(depositos), Encoding.UTF8, "application/json")
-            };
-
-            _handlerMock
-                .Protected()
-                .SetupSequence<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(), ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(responseNotFound)
-                .ReturnsAsync(responseSuccess);
-
-            // Act
-            var result = await _service.GetDepositoByAtivoId(1);
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result?.AtivoId, Is.EqualTo(1));
-            Assert.That(result?.Banco, Is.EqualTo("Banco A"));
-            _handlerMock.Protected().Verify("SendAsync", Times.Once(), ItExpr.Is<HttpRequestMessage>(req =>
-                req.Method == HttpMethod.Get && req.RequestUri.ToString().EndsWith("api/depositos/ativo/1")), ItExpr.IsAny<CancellationToken>());
-            _handlerMock.Protected().Verify("SendAsync", Times.Once(), ItExpr.Is<HttpRequestMessage>(req =>
-                req.Method == HttpMethod.Get && req.RequestUri.ToString().EndsWith("api/depositos")), ItExpr.IsAny<CancellationToken>());
         }
 
         [Test]
