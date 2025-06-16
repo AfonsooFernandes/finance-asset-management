@@ -13,11 +13,9 @@ namespace UIAutomationTests.Tests
         {
             Driver.Navigate().GoToUrl($"{BaseUrl}/Login");
             var loginPage = new LoginPage(Driver);
-            loginPage.Login("teste@ipvc.pt", "testepassword");
+            loginPage.Login("paivaluis@ipvc.pt", "Password123");
 
-            new WebDriverWait(Driver, TimeSpan.FromSeconds(5)).Until(driver =>
-                driver.Url.Contains("/Menu")
-            );
+            new WebDriverWait(Driver, TimeSpan.FromSeconds(5)).Until(driver =>driver.Url.Contains("/Menu"));
 
             Assert.That(Driver.Url, Does.Contain("/Menu"));
         }
@@ -27,7 +25,7 @@ namespace UIAutomationTests.Tests
         {
             Driver.Navigate().GoToUrl($"{BaseUrl}/Login");
             var loginPage = new LoginPage(Driver);
-            loginPage.Login("teste@ipvc.pt", "wrongpass");
+            loginPage.Login("paivaluis@ipvc.pt", "wrongpass");
 
             new WebDriverWait(Driver, TimeSpan.FromSeconds(5)).Until(driver =>
                 loginPage.ErrorMessage.Displayed && loginPage.ErrorMessage.Text.Contains("Erro")
