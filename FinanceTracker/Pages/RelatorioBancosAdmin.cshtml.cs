@@ -48,11 +48,12 @@ namespace FinanceTracker.Pages
                     d.AtivoFinanceiro.DataInicio <= dataFimUtc &&
                     d.AtivoFinanceiro.DataInicio.AddMonths(d.AtivoFinanceiro.Duracao) >= dataInicioUtc
                 )
-                .Select(d => new RelatorioBancosDto
+                .GroupBy(d => d.Banco)
+                .Select(g => new RelatorioBancosDto
                 {
-                    Banco = d.Banco,
-                    TotalDepositado = d.Valor,
-                    JurosTotaisPagos = d.Valor * (d.TaxaJuroAnual / 100.0) * (d.AtivoFinanceiro.Duracao / 12.0)
+                    Banco = g.Key,
+                    TotalDepositado = g.Sum(d => d.Valor),
+                    JurosTotaisPagos = g.Sum(d => d.Valor * (d.TaxaJuroAnual / 100.0) * (d.AtivoFinanceiro.Duracao / 12.0))
                 })
                 .ToListAsync();
 
