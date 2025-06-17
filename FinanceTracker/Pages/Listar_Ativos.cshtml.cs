@@ -44,6 +44,9 @@ namespace FinanceTracker.Pages
         [BindProperty(SupportsGet = true)]
         public string? TipoFiltro { get; set; }
 
+        // Guarda os valores para mostrar na tabela sem buscar de novo
+        private Dictionary<int, decimal> _valoresAtivos = new();
+
         public async Task<IActionResult> OnGetAsync()
         {
             if (UserId <= 0)
@@ -59,7 +62,7 @@ namespace FinanceTracker.Pages
                 return Page();
             }
 
-            // Aplica filtro por tipo se fornecido
+            // Aplica filtro se tiver
             if (!string.IsNullOrEmpty(TipoFiltro))
             {
                 ativos = ativos.Where(a => a.Tipo == TipoFiltro).ToList();
@@ -77,7 +80,7 @@ namespace FinanceTracker.Pages
                         var imovel = await _imovelArrendadoService.GetImovelByAtivoId(ativo.Id);
                         if (imovel != null)
                         {
-                            valorParaOrdenar = (decimal)imovel.ValorImovel; // CAST explícito
+                            valorParaOrdenar = (decimal)imovel.ValorImovel;
                         }
                         break;
 
@@ -85,7 +88,7 @@ namespace FinanceTracker.Pages
                         var deposito = await _depositoPrazoService.GetDepositoByAtivoId(ativo.Id);
                         if (deposito != null)
                         {
-                            valorParaOrdenar = (decimal)deposito.Valor; // CAST explícito
+                            valorParaOrdenar = (decimal)deposito.Valor;
                         }
                         break;
 
@@ -93,7 +96,7 @@ namespace FinanceTracker.Pages
                         var fundo = await _fundoInvestimentoService.GetFundoByAtivoId(ativo.Id);
                         if (fundo != null)
                         {
-                            valorParaOrdenar = (decimal)fundo.Montante; // CAST explícito
+                            valorParaOrdenar = (decimal)fundo.Montante;
                         }
                         break;
 
@@ -102,16 +105,25 @@ namespace FinanceTracker.Pages
                         break;
                 }
 
+                _valoresAtivos[ativo.Id] = valorParaOrdenar;
                 listaOrdenada.Add((ativo, valorParaOrdenar));
             }
 
-            // Ordenar decrescente pelo valor calculado
+            // Ordenar decrescente pelo valor
             AtivosFinanceiros = listaOrdenada
                 .OrderByDescending(x => x.ValorParaOrdenar)
                 .Select(x => x.Ativo)
                 .ToList();
 
             return Page();
+        }
+
+        // Para mostrar o valor formatado na tabela
+        public decimal ObterValor(AtivoFinanceiroDto ativo)
+        {
+            if (_valoresAtivos.TryGetValue(ativo.Id, out var valor))
+                return valor;
+            return 0m;
         }
     }
 }

@@ -9,9 +9,9 @@
 
 <div class="container">
     <form method="get" id="formFiltro">
-        <div style="margin-bottom: 1rem;">
-            <label for="tipoFiltro">Filtrar por Tipo:</label>
-            <select id="tipoFiltro" name="TipoFiltro" onchange="this.form.submit()">
+        <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+            <label for="tipoFiltro" style="margin: 0;">Filtrar por Tipo:</label>
+            <select id="tipoFiltro" name="TipoFiltro" onchange="this.form.submit()" style="min-width: 180px;">
                 <option value="">-- Todos --</option>
                 @foreach (var tipo in Model.TiposDisponiveis)
                 {
@@ -24,32 +24,34 @@
 
         <table>
             <thead>
-                <tr>
-                    <th>Tipo</th>
-                    <th>Data Início</th>
-                    <th>Duração</th>
-                    <th>Imposto</th>
-                    <th>Detalhes</th>
-                </tr>
+            <tr>
+                <th>Tipo</th>
+                <th>Data Início</th>
+                <th>Duração</th>
+                <th>Imposto</th>
+                <th>Valor</th>  <!-- Coluna valor -->
+                <th>Detalhes</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var ativo in Model.AtivosFinanceiros)
-                {
-                    <tr>
-                        <td>@ativo.Tipo</td>
-                        <td>@ativo.DataInicio.ToString("yyyy-MM-dd")</td>
-                        <td>@ativo.Duracao</td>
-                        <td>@ativo.Imposto</td>
-                        <td>
-                            <form method="get" action="/DetalhesAtivo">
-                                <input type="hidden" name="tipo" value="@ativo.Tipo" />
-                                <input type="hidden" name="id" value="@ativo.Id" />
-                                <input type="hidden" name="userId" value="@ativo.UtilizadorId" />
-                                <button type="submit" class="btn btn-primary">Detalhes</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
+            @foreach (var ativo in Model.AtivosFinanceiros)
+            {
+                <tr>
+                    <td>@ativo.Tipo</td>
+                    <td>@ativo.DataInicio.ToString("yyyy-MM-dd")</td>
+                    <td>@ativo.Duracao</td>
+                    <td>@ativo.Imposto</td>
+                    <td>@Model.ObterValor(ativo).ToString("C")</td>  <!-- Valor formatado -->
+                    <td>
+                        <form method="get" action="/DetalhesAtivo">
+                            <input type="hidden" name="tipo" value="@ativo.Tipo" />
+                            <input type="hidden" name="id" value="@ativo.Id" />
+                            <input type="hidden" name="userId" value="@ativo.UtilizadorId" />
+                            <button type="submit" class="btn btn-primary">Detalhes</button>
+                        </form>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </form>
@@ -58,3 +60,16 @@
         <a href="/Menu" class="btn btn-secondary">Voltar ao Menu</a>
     </div>
 </div>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 20px 10px;
+        text-align: center;
+    }
+    th, td {
+        padding: 10px 15px;
+        text-align: center;
+    }
+</style>
