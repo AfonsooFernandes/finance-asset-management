@@ -40,18 +40,6 @@ namespace FinanceTracker.Migrations
                     b.Property<float>("Imposto")
                         .HasColumnType("real");
 
-                    b.Property<decimal>("LucroMensalMedioAntesImpostos")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("LucroMensalMedioAposImpostos")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("LucroTotalAntesImpostos")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("LucroTotalAposImpostos")
-                        .HasColumnType("numeric");
-
                     b.Property<string>("Tipo")
                         .IsRequired()
                         .HasColumnType("text");
@@ -81,19 +69,22 @@ namespace FinanceTracker.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("DataInicio")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("NumeroConta")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<float>("TaxaJuroAnual")
-                        .HasColumnType("real");
+                    b.Property<double>("TaxaJuroAnual")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Titulares")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<float>("Valor")
-                        .HasColumnType("real");
+                    b.Property<double>("Valor")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -114,15 +105,15 @@ namespace FinanceTracker.Migrations
                     b.Property<int>("AtivoId")
                         .HasColumnType("integer");
 
-                    b.Property<float>("Montante")
-                        .HasColumnType("real");
+                    b.Property<double>("Montante")
+                        .HasColumnType("double precision");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<float>("TaxaJuro")
-                        .HasColumnType("real");
+                    b.Property<double>("TaxaJuro")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -151,17 +142,17 @@ namespace FinanceTracker.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<float>("OutrasDespesas")
-                        .HasColumnType("real");
+                    b.Property<double>("OutrasDespesas")
+                        .HasColumnType("double precision");
 
-                    b.Property<float>("ValorCondominio")
-                        .HasColumnType("real");
+                    b.Property<double>("ValorCondominio")
+                        .HasColumnType("double precision");
 
-                    b.Property<float>("ValorImovel")
-                        .HasColumnType("real");
+                    b.Property<double>("ValorImovel")
+                        .HasColumnType("double precision");
 
-                    b.Property<float>("ValorRenda")
-                        .HasColumnType("real");
+                    b.Property<double>("ValorRenda")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
@@ -188,8 +179,8 @@ namespace FinanceTracker.Migrations
                     b.Property<int>("Mes")
                         .HasColumnType("integer");
 
-                    b.Property<float>("Taxa")
-                        .HasColumnType("real");
+                    b.Property<double>("Taxa")
+                        .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
