@@ -38,6 +38,8 @@ a:hover, .btn-link:hover {
     display: inline-block;
     text-align: center;
     text-decoration: none;
+    width: 250px; /* Uniform width for all buttons */
+    box-sizing: border-box;
 }
 
 .btn-primary:hover {
@@ -57,6 +59,8 @@ a:hover, .btn-link:hover {
     display: inline-block;
     text-align: center;
     text-decoration: none;
+    width: 250px; /* Uniform width for logout button */
+    box-sizing: border-box;
 }
 
 .btn-secondary:hover {
@@ -116,7 +120,7 @@ input:focus {
     margin-bottom: 1rem;
 }
 
-/* Centralizando os botões dentro do form-group */
+/* Centralizing the buttons within the form-group */
 button, .btn {
     width: auto;
     max-width: 200px;
@@ -153,10 +157,12 @@ h1, h2, h3 {
     content: "Ocorreu um erro inesperado.";
 }
 
+/* Uniform size for buttons */
 .button-same-size {
-    width: 200px;
+    width: 250px; /* Match the width of btn-primary and btn-secondary */
     text-align: center;
     display: inline-block;
     box-sizing: border-box;
-    margin: 5px 0;
+    margin: 10px 0; /* Consistent spacing */
+    min-width: 250px; /* Ensure minimum width */
 }
