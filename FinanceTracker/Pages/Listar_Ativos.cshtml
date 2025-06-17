@@ -8,18 +8,31 @@
 <h2 style="text-align: center;">@ViewData["Title"]</h2>
 
 <div class="container">
+    <form method="get" class="filtro-form" style="text-align: center; margin-bottom: 1.5rem;">
+        <input type="hidden" name="userId" value="@Request.Query["userId"]" />
+        <label for="tipo">Filtrar por Tipo:</label>
+        <select name="tipo" id="tipo" onchange="this.form.submit()">
+            <option value="">-- Todos os Tipos --</option>
+            @foreach (var tipo in Model.TiposDisponiveis)
+            {
+                <option value="@tipo" @(Request.Query["tipo"] == tipo ? "selected" : "")>@tipo</option>
+            }
+        </select>
+    </form>
+
     <table>
         <tr>
             <th>Tipo</th>
             <th>Data Início</th>
             <th>Duração</th>
             <th>Imposto</th>
+            <th>Ações</th>
         </tr>
         @foreach (var ativo in Model.AtivosFinanceiros)
         {
             <tr>
                 <td>@ativo.Tipo</td>
-                <td>@ativo.DataInicio</td>
+                <td>@ativo.DataInicio.ToShortDateString()</td>
                 <td>@ativo.Duracao</td>
                 <td>@ativo.Imposto</td>
                 <td>
@@ -31,22 +44,18 @@
                             <input type="hidden" name="userId" value="@ativo.UtilizadorId"/>
                             <button type="submit" class="btn btn-primary">Detalhes</button>
                         </form>
-                        <span class="debug-info" style="display:none;">
-                            Debug: Tipo=@ativo.Tipo, Id=@ativo.Id, UserId=@ativo.UtilizadorId
-                        </span>
                     }
                     else
                     {
                         <span class="text-muted">
                             Detalhes indisponíveis (Tipo: @(ativo.Tipo ?? "nulo"), Id: @ativo.Id, UserId: @ativo.UtilizadorId)
-                            </span>
+                        </span>
                     }
                 </td>
             </tr>
         }
     </table>
-    
-        
+
     <div style="text-align: center; margin-top: 2rem;">
         <a href="/Menu" class="btn btn-secondary">Voltar ao Menu</a>
     </div>
@@ -54,23 +63,16 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        console.log("Script de Listar_Ativos iniciado.");
         const userId = localStorage.getItem("userId");
-        console.log("UserId do localStorage em Listar_Ativos:", userId);
-        console.log("Query string atual:", window.location.search);
 
         if (!userId) {
-            console.log("Erro: userId não encontrado no localStorage.");
             alert("Erro: Utilizador não autenticado. Por favor, volte a fazer login.");
             window.location.href = "/Login";
             return;
         }
 
         if (!window.location.search.includes("userId=")) {
-            console.log("Query string não contém userId. Redirecionando para:", "/Listar_Ativos?userId=" + userId);
             window.location.href = "/Listar_Ativos?userId=" + encodeURIComponent(userId);
-        } else {
-            console.log("userId presente na query string:", window.location.search);
         }
     });
 </script>

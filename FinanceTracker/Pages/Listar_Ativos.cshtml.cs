@@ -20,53 +20,46 @@ namespace FinanceTracker.Pages
         }
 
         public IList<AtivoFinanceiroDto> AtivosFinanceiros { get; set; } = new List<AtivoFinanceiroDto>();
+        public List<string> TiposDisponiveis { get; set; } = new();
 
         public async Task<IActionResult> OnGetAsync()
         {
             try
             {
-                Console.WriteLine("OnGetAsync iniciado.");
-                
                 var userId = Request.Query["userId"].ToString();
-                Console.WriteLine($"UserId da query string: '{userId}'");
+                var tipoFiltro = Request.Query["tipo"].ToString()?.Trim();
 
                 if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int utilizadorId))
-                {
-                    Console.WriteLine("Erro: UtilizadorId inválido ou não fornecido.");
                     return RedirectToPage("/Login");
-                }
-                Console.WriteLine($"UtilizadorId: {utilizadorId}");
-                
+
                 var utilizador = await _context.Utilizadores.FindAsync(utilizadorId);
                 if (utilizador == null)
-                {
-                    Console.WriteLine($"Erro: Utilizador com ID {utilizadorId} não encontrado.");
                     return RedirectToPage("/Login");
-                }
-                Console.WriteLine($"Utilizador encontrado: {utilizador.Email}");
-                
-                try
-                {
-                    Console.WriteLine("Buscando AtivosFinanceiros...");
-                    AtivosFinanceiros = await _context.AtivosFinanceiros
-                        .Where(a => a.UtilizadorId == utilizadorId)
-                        .Select(a => new AtivoFinanceiroDto
-                        {
-                            Id = a.Id,
-                            UtilizadorId = a.UtilizadorId,
-                            Tipo = a.Tipo ?? "",
-                            DataInicio = a.DataInicio,
-                            Duracao = a.Duracao,
-                            Imposto = a.Imposto
-                        })
-                        .ToListAsync();
-                    Console.WriteLine($"AtivosFinanceiros encontrados: {AtivosFinanceiros.Count} (IDs: {string.Join(", ", AtivosFinanceiros.Select(a => a.Id))})");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Erro ao buscar AtivosFinanceiros: {ex.Message}");
-                    AtivosFinanceiros = new List<AtivoFinanceiroDto>();
-                }
+
+                var query = _context.AtivosFinanceiros
+                    .Where(a => a.UtilizadorId == utilizadorId);
+
+                if (!string.IsNullOrEmpty(tipoFiltro))
+                    query = query.Where(a => a.Tipo == tipoFiltro);
+
+                AtivosFinanceiros = await query
+                    .Select(a => new AtivoFinanceiroDto
+                    {
+                        Id = a.Id,
+                        UtilizadorId = a.UtilizadorId,
+                        Tipo = a.Tipo ?? "",
+                        DataInicio = a.DataInicio,
+                        Duracao = a.Duracao,
+                        Imposto = a.Imposto
+                    })
+                    .ToListAsync();
+
+                TiposDisponiveis = await _context.AtivosFinanceiros
+                    .Where(a => a.UtilizadorId == utilizadorId && a.Tipo != null)
+                    .Select(a => a.Tipo)
+                    .Distinct()
+                    .OrderBy(t => t)
+                    .ToListAsync();
 
                 return Page();
             }
