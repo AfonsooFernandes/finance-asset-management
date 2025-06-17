@@ -8,71 +8,53 @@
 <h2 style="text-align: center;">@ViewData["Title"]</h2>
 
 <div class="container">
-    <form method="get" class="filtro-form" style="text-align: center; margin-bottom: 1.5rem;">
-        <input type="hidden" name="userId" value="@Request.Query["userId"]" />
-        <label for="tipo">Filtrar por Tipo:</label>
-        <select name="tipo" id="tipo" onchange="this.form.submit()">
-            <option value="">-- Todos os Tipos --</option>
-            @foreach (var tipo in Model.TiposDisponiveis)
-            {
-                <option value="@tipo" @(Request.Query["tipo"] == tipo ? "selected" : "")>@tipo</option>
-            }
-        </select>
-    </form>
+    <form method="get" id="formFiltro">
+        <div style="margin-bottom: 1rem;">
+            <label for="tipoFiltro">Filtrar por Tipo:</label>
+            <select id="tipoFiltro" name="TipoFiltro" onchange="this.form.submit()">
+                <option value="">-- Todos --</option>
+                @foreach (var tipo in Model.TiposDisponiveis)
+                {
+                    <option value="@tipo" @(tipo == Model.TipoFiltro ? "selected" : "")>@tipo</option>
+                }
+            </select>
 
-    <table>
-        <tr>
-            <th>Tipo</th>
-            <th>Data Início</th>
-            <th>Duração</th>
-            <th>Imposto</th>
-            <th>Ações</th>
-        </tr>
-        @foreach (var ativo in Model.AtivosFinanceiros)
-        {
-            <tr>
-                <td>@ativo.Tipo</td>
-                <td>@ativo.DataInicio.ToShortDateString()</td>
-                <td>@ativo.Duracao</td>
-                <td>@ativo.Imposto</td>
-                <td>
-                    @if (!string.IsNullOrEmpty(ativo.Tipo) && ativo.Id > 0 && ativo.UtilizadorId > 0) 
-                    { 
-                        <form method="get" action="/DetalhesAtivo">
-                            <input type="hidden" name="tipo" value="@ativo.Tipo"/>
-                            <input type="hidden" name="id" value="@ativo.Id"/>
-                            <input type="hidden" name="userId" value="@ativo.UtilizadorId"/>
-                            <button type="submit" class="btn btn-primary">Detalhes</button>
-                        </form>
-                    }
-                    else
-                    {
-                        <span class="text-muted">
-                            Detalhes indisponíveis (Tipo: @(ativo.Tipo ?? "nulo"), Id: @ativo.Id, UserId: @ativo.UtilizadorId)
-                        </span>
-                    }
-                </td>
-            </tr>
-        }
-    </table>
+            <input type="hidden" name="UserId" value="@Model.UserId" />
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Data Início</th>
+                    <th>Duração</th>
+                    <th>Imposto</th>
+                    <th>Detalhes</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ativo in Model.AtivosFinanceiros)
+                {
+                    <tr>
+                        <td>@ativo.Tipo</td>
+                        <td>@ativo.DataInicio.ToString("yyyy-MM-dd")</td>
+                        <td>@ativo.Duracao</td>
+                        <td>@ativo.Imposto</td>
+                        <td>
+                            <form method="get" action="/DetalhesAtivo">
+                                <input type="hidden" name="tipo" value="@ativo.Tipo" />
+                                <input type="hidden" name="id" value="@ativo.Id" />
+                                <input type="hidden" name="userId" value="@ativo.UtilizadorId" />
+                                <button type="submit" class="btn btn-primary">Detalhes</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
 
     <div style="text-align: center; margin-top: 2rem;">
         <a href="/Menu" class="btn btn-secondary">Voltar ao Menu</a>
     </div>
 </div>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const userId = localStorage.getItem("userId");
-
-        if (!userId) {
-            alert("Erro: Utilizador não autenticado. Por favor, volte a fazer login.");
-            window.location.href = "/Login";
-            return;
-        }
-
-        if (!window.location.search.includes("userId=")) {
-            window.location.href = "/Listar_Ativos?userId=" + encodeURIComponent(userId);
-        }
-    });
-</script>

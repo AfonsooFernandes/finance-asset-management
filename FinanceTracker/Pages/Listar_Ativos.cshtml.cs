@@ -1,8 +1,7 @@
-﻿using FinanceTracker.Data;
-using FinanceTracker.Models;
+﻿using FinanceTracker.Models;
+using FinanceTracker.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,62 +11,107 @@ namespace FinanceTracker.Pages
 {
     public class ListarAtivosModel : PageModel
     {
-        private readonly FinanceTrackerContext _context;
+        private readonly AtivoFinanceiroService _ativoFinanceiroService;
+        private readonly ImovelArrendadoService _imovelArrendadoService;
+        private readonly DepositoPrazoService _depositoPrazoService;
+        private readonly FundoInvestimentoService _fundoInvestimentoService;
 
-        public ListarAtivosModel(FinanceTrackerContext context)
+        public ListarAtivosModel(
+            AtivoFinanceiroService ativoFinanceiroService,
+            ImovelArrendadoService imovelArrendadoService,
+            DepositoPrazoService depositoPrazoService,
+            FundoInvestimentoService fundoInvestimentoService)
         {
-            _context = context;
+            _ativoFinanceiroService = ativoFinanceiroService;
+            _imovelArrendadoService = imovelArrendadoService;
+            _depositoPrazoService = depositoPrazoService;
+            _fundoInvestimentoService = fundoInvestimentoService;
         }
 
-        public IList<AtivoFinanceiroDto> AtivosFinanceiros { get; set; } = new List<AtivoFinanceiroDto>();
-        public List<string> TiposDisponiveis { get; set; } = new();
+        public List<AtivoFinanceiroDto> AtivosFinanceiros { get; set; } = new();
+
+        public List<string> TiposDisponiveis { get; set; } = new List<string>
+        {
+            "Imóvel Arrendado",
+            "Depósito a Prazo",
+            "Fundo de Investimento"
+            // Adicione outros tipos se houver
+        };
+
+        [BindProperty(SupportsGet = true)]
+        public int UserId { get; set; }
+
+        [BindProperty(SupportsGet = true)]
+        public string? TipoFiltro { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            try
+            if (UserId <= 0)
             {
-                var userId = Request.Query["userId"].ToString();
-                var tipoFiltro = Request.Query["tipo"].ToString()?.Trim();
+                return RedirectToPage("/Login");
+            }
 
-                if (string.IsNullOrEmpty(userId) || !int.TryParse(userId, out int utilizadorId))
-                    return RedirectToPage("/Login");
+            var ativos = (List<AtivoFinanceiroDto>)await _ativoFinanceiroService.GetAtivosByUserId(UserId);
 
-                var utilizador = await _context.Utilizadores.FindAsync(utilizadorId);
-                if (utilizador == null)
-                    return RedirectToPage("/Login");
-
-                var query = _context.AtivosFinanceiros
-                    .Where(a => a.UtilizadorId == utilizadorId);
-
-                if (!string.IsNullOrEmpty(tipoFiltro))
-                    query = query.Where(a => a.Tipo == tipoFiltro);
-
-                AtivosFinanceiros = await query
-                    .Select(a => new AtivoFinanceiroDto
-                    {
-                        Id = a.Id,
-                        UtilizadorId = a.UtilizadorId,
-                        Tipo = a.Tipo ?? "",
-                        DataInicio = a.DataInicio,
-                        Duracao = a.Duracao,
-                        Imposto = a.Imposto
-                    })
-                    .ToListAsync();
-
-                TiposDisponiveis = await _context.AtivosFinanceiros
-                    .Where(a => a.UtilizadorId == utilizadorId && a.Tipo != null)
-                    .Select(a => a.Tipo)
-                    .Distinct()
-                    .OrderBy(t => t)
-                    .ToListAsync();
-
+            if (ativos == null || !ativos.Any())
+            {
+                AtivosFinanceiros = new List<AtivoFinanceiroDto>();
                 return Page();
             }
-            catch (Exception ex)
+
+            // Aplica filtro por tipo se fornecido
+            if (!string.IsNullOrEmpty(TipoFiltro))
             {
-                Console.WriteLine($"Erro geral em OnGetAsync: {ex.Message}");
-                return StatusCode(500, "Erro interno no servidor.");
+                ativos = ativos.Where(a => a.Tipo == TipoFiltro).ToList();
             }
+
+            var listaOrdenada = new List<(AtivoFinanceiroDto Ativo, decimal ValorParaOrdenar)>();
+
+            foreach (var ativo in ativos)
+            {
+                decimal valorParaOrdenar = 0m;
+
+                switch (ativo.Tipo)
+                {
+                    case "Imóvel Arrendado":
+                        var imovel = await _imovelArrendadoService.GetImovelByAtivoId(ativo.Id);
+                        if (imovel != null)
+                        {
+                            valorParaOrdenar = (decimal)imovel.ValorImovel; // CAST explícito
+                        }
+                        break;
+
+                    case "Depósito a Prazo":
+                        var deposito = await _depositoPrazoService.GetDepositoByAtivoId(ativo.Id);
+                        if (deposito != null)
+                        {
+                            valorParaOrdenar = (decimal)deposito.Valor; // CAST explícito
+                        }
+                        break;
+
+                    case "Fundo de Investimento":
+                        var fundo = await _fundoInvestimentoService.GetFundoByAtivoId(ativo.Id);
+                        if (fundo != null)
+                        {
+                            valorParaOrdenar = (decimal)fundo.Montante; // CAST explícito
+                        }
+                        break;
+
+                    default:
+                        valorParaOrdenar = 0m;
+                        break;
+                }
+
+                listaOrdenada.Add((ativo, valorParaOrdenar));
+            }
+
+            // Ordenar decrescente pelo valor calculado
+            AtivosFinanceiros = listaOrdenada
+                .OrderByDescending(x => x.ValorParaOrdenar)
+                .Select(x => x.Ativo)
+                .ToList();
+
+            return Page();
         }
     }
 }
