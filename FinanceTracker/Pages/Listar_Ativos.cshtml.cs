@@ -35,7 +35,6 @@ namespace FinanceTracker.Pages
             "Imóvel Arrendado",
             "Depósito a Prazo",
             "Fundo de Investimento"
-            // Adicione outros tipos se houver
         };
 
         [BindProperty(SupportsGet = true)]
@@ -44,8 +43,8 @@ namespace FinanceTracker.Pages
         [BindProperty(SupportsGet = true)]
         public string? TipoFiltro { get; set; }
 
-        // Guarda os valores para mostrar na tabela sem buscar de novo
-        private Dictionary<int, decimal> _valoresAtivos = new();
+        [BindProperty(SupportsGet = true)]
+        public string? IntervaloValor { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -62,7 +61,6 @@ namespace FinanceTracker.Pages
                 return Page();
             }
 
-            // Aplica filtro se tiver
             if (!string.IsNullOrEmpty(TipoFiltro))
             {
                 ativos = ativos.Where(a => a.Tipo == TipoFiltro).ToList();
@@ -72,44 +70,41 @@ namespace FinanceTracker.Pages
 
             foreach (var ativo in ativos)
             {
-                decimal valorParaOrdenar = 0m;
+                decimal valorParaOrdenar = ObterValor(ativo);
 
-                switch (ativo.Tipo)
-                {
-                    case "Imóvel Arrendado":
-                        var imovel = await _imovelArrendadoService.GetImovelByAtivoId(ativo.Id);
-                        if (imovel != null)
-                        {
-                            valorParaOrdenar = (decimal)imovel.ValorImovel;
-                        }
-                        break;
-
-                    case "Depósito a Prazo":
-                        var deposito = await _depositoPrazoService.GetDepositoByAtivoId(ativo.Id);
-                        if (deposito != null)
-                        {
-                            valorParaOrdenar = (decimal)deposito.Valor;
-                        }
-                        break;
-
-                    case "Fundo de Investimento":
-                        var fundo = await _fundoInvestimentoService.GetFundoByAtivoId(ativo.Id);
-                        if (fundo != null)
-                        {
-                            valorParaOrdenar = (decimal)fundo.Montante;
-                        }
-                        break;
-
-                    default:
-                        valorParaOrdenar = 0m;
-                        break;
-                }
-
-                _valoresAtivos[ativo.Id] = valorParaOrdenar;
                 listaOrdenada.Add((ativo, valorParaOrdenar));
             }
 
-            // Ordenar decrescente pelo valor
+            // Aplicar filtro de valor (brackets)
+            if (!string.IsNullOrEmpty(IntervaloValor))
+            {
+                decimal min = 0, max = decimal.MaxValue;
+
+                switch (IntervaloValor)
+                {
+                    case "0-1000":
+                        min = 0;
+                        max = 1000;
+                        break;
+                    case "1000-10000":
+                        min = 1000;
+                        max = 10000;
+                        break;
+                    case "10000-100000":
+                        min = 10000;
+                        max = 100000;
+                        break;
+                    case "100000+":
+                        min = 100000;
+                        max = decimal.MaxValue;
+                        break;
+                }
+
+                listaOrdenada = listaOrdenada
+                    .Where(x => x.ValorParaOrdenar >= min && x.ValorParaOrdenar < max)
+                    .ToList();
+            }
+
             AtivosFinanceiros = listaOrdenada
                 .OrderByDescending(x => x.ValorParaOrdenar)
                 .Select(x => x.Ativo)
@@ -118,12 +113,15 @@ namespace FinanceTracker.Pages
             return Page();
         }
 
-        // Para mostrar o valor formatado na tabela
         public decimal ObterValor(AtivoFinanceiroDto ativo)
         {
-            if (_valoresAtivos.TryGetValue(ativo.Id, out var valor))
-                return valor;
-            return 0m;
+            return ativo.Tipo switch
+            {
+                "Imóvel Arrendado" => (decimal)(_imovelArrendadoService.GetImovelByAtivoId(ativo.Id)?.Result?.ValorImovel ?? 0),
+                "Depósito a Prazo" => (decimal)(_depositoPrazoService.GetDepositoByAtivoId(ativo.Id)?.Result?.Valor ?? 0),
+                "Fundo de Investimento" => (decimal)(_fundoInvestimentoService.GetFundoByAtivoId(ativo.Id)?.Result?.Montante ?? 0),
+                _ => 0m,
+            };
         }
     }
 }
